@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>macOS Flip Clock & Timer</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="icon" href="/favicon/favicon.ico" sizes="any">
+    <link rel="manifest" href="/favicon/site.webmanifest">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap');
@@ -18,7 +24,7 @@
             --sep-color: #2a2a2a;
             --text-main: #ffffff;
             --text-dim: #666;
-            
+
             --unit-h: 90px;
             --unit-w: 60px;
             --font-sz: 65px;
@@ -79,13 +85,25 @@
         }
 
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-2px); }
-            75% { transform: translateX(2px); }
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-2px);
+            }
+
+            75% {
+                transform: translateX(2px);
+            }
         }
 
         @media (min-width: 768px) {
-            .flip-unit { margin: 0 6px; }
+            .flip-unit {
+                margin: 0 6px;
+            }
         }
 
         /* Plates */
@@ -102,7 +120,7 @@
             transition: background 0.5s ease, color 0.5s ease;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            transform: translateZ(0); 
+            transform: translateZ(0);
             backface-visibility: hidden;
         }
 
@@ -113,7 +131,8 @@
             line-height: var(--unit-h);
             text-align: center;
             font-size: var(--font-sz);
-            font-weight: 700 !important; /* Force bold on both halves */
+            font-weight: 700 !important;
+            /* Force bold on both halves */
             left: 0;
             font-variant-numeric: tabular-nums;
             transition: font-size 0.3s ease, line-height 0.3s ease;
@@ -123,16 +142,20 @@
             top: 0;
             border-radius: var(--flip-radius) var(--flip-radius) 0 0;
             z-index: 1;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         }
-        .plate-top .digit-text { top: 0; }
+
+        .plate-top .digit-text {
+            top: 0;
+        }
 
         .plate-bottom {
             bottom: 0;
             border-radius: 0 0 var(--flip-radius) var(--flip-radius);
             z-index: 0;
         }
-        .plate-bottom .digit-text { 
+
+        .plate-bottom .digit-text {
             top: 0;
             transform: translateY(-50%);
         }
@@ -155,11 +178,17 @@
         }
 
         @keyframes flip-down {
-            0% { transform: rotateX(0deg); }
-            100% { transform: rotateX(-180deg); }
+            0% {
+                transform: rotateX(0deg);
+            }
+
+            100% {
+                transform: rotateX(-180deg);
+            }
         }
 
-        .flap-front, .flap-back {
+        .flap-front,
+        .flap-back {
             position: absolute;
             width: 100%;
             height: 100%;
@@ -175,42 +204,95 @@
         .flap-front {
             z-index: 2;
             border-radius: var(--flip-radius) var(--flip-radius) 0 0;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         }
 
         .flap-back {
             transform: rotateX(180deg);
             border-radius: 0 0 var(--flip-radius) var(--flip-radius);
-            border-top: 1px solid rgba(0,0,0,0.1);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
         }
-        .flap-back .digit-text { 
+
+        .flap-back .digit-text {
             top: 0;
             transform: translateY(-50%);
         }
 
         /* Navigation & UI */
         .status-pill {
-            position: absolute; top: 20px; right: 20px; font-size: 10px;
-            padding: 4px 8px; border-radius: 20px; background: var(--panel-bg);
-            color: var(--text-dim); display: flex; align-items: center; gap: 4px; z-index: 100;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 20px;
+            background: var(--panel-bg);
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            z-index: 100;
         }
-        
-        .tab-button { transition: all 0.2s ease; opacity: 0.3; color: var(--text-main); font-weight: 700; }
-        .tab-button.active { opacity: 1; }
-        
+
+        .tab-button {
+            transition: all 0.2s ease;
+            opacity: 0.3;
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .tab-button.active {
+            opacity: 1;
+        }
+
         .timer-input {
-            background: var(--flip-bg); border: 2px solid var(--sep-color); outline: none; color: var(--text-main);
-            text-align: center; border-radius: 12px; width: 70px; padding: 12px 0; font-size: 1.6rem;
+            background: var(--flip-bg);
+            border: 2px solid var(--sep-color);
+            outline: none;
+            color: var(--text-main);
+            text-align: center;
+            border-radius: 12px;
+            width: 70px;
+            padding: 12px 0;
+            font-size: 1.6rem;
             font-weight: 700;
             transition: all 0.3s ease;
         }
-        @media (min-width: 768px) { .timer-input { width: 100px; font-size: 2.2rem; } }
-        
-        .sep { color: var(--sep-color); display: flex; flex-direction: column; justify-content: center; gap: 8px; font-size: 24px; transition: color 0.5s ease; }
-        @media (min-width: 768px) { .sep { gap: 30px; font-size: 60px; } }
-        
-        #quote-container { transition: opacity 0.6s ease; max-width: 800px; text-align: center; min-height: 80px; }
-        .hidden { display: none !important; }
+
+        @media (min-width: 768px) {
+            .timer-input {
+                width: 100px;
+                font-size: 2.2rem;
+            }
+        }
+
+        .sep {
+            color: var(--sep-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 8px;
+            font-size: 24px;
+            transition: color 0.5s ease;
+        }
+
+        @media (min-width: 768px) {
+            .sep {
+                gap: 30px;
+                font-size: 60px;
+            }
+        }
+
+        #quote-container {
+            transition: opacity 0.6s ease;
+            max-width: 800px;
+            text-align: center;
+            min-height: 80px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
 
         .control-btn {
             background: var(--panel-bg);
@@ -219,8 +301,16 @@
             border-radius: 50%;
             transition: all 0.2s ease;
         }
-        .control-btn:hover { background: rgba(128, 128, 128, 0.15); color: var(--text-main); }
-        .control-btn.active { color: #3b82f6; background: rgba(59, 130, 246, 0.1); }
+
+        .control-btn:hover {
+            background: rgba(128, 128, 128, 0.15);
+            color: var(--text-main);
+        }
+
+        .control-btn.active {
+            color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+        }
 
         /* Timer Finished Overlay */
         #timer-overlay {
@@ -230,10 +320,12 @@
             opacity: 0;
             transition: opacity 0.5s ease;
         }
+
         #timer-overlay.active {
             display: flex;
             opacity: 1;
         }
+
         .light-theme #timer-overlay {
             background: rgba(255, 255, 255, 0.85);
         }
@@ -241,12 +333,23 @@
         .pulse-text {
             animation: text-pulse 2s infinite ease-in-out;
         }
+
         @keyframes text-pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.8; }
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <div id="wake-status" class="status-pill opacity-0 transition-opacity">
@@ -257,12 +360,18 @@
     <!-- Timer Finished Overlay -->
     <div id="timer-overlay" class="fixed inset-0 z-[200] flex-col items-center justify-center text-center p-6">
         <div class="space-y-6">
-            <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+            <div
+                class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
             </div>
             <h2 class="text-4xl md:text-6xl font-bold tracking-tight pulse-text">Time's Up</h2>
             <p class="text-gray-500 uppercase tracking-[0.3em] text-xs">Your countdown has finished</p>
-            <button onclick="dismissTimerOverlay()" class="mt-8 bg-blue-600 hover:bg-blue-500 text-white px-12 py-4 rounded-full font-bold text-xs tracking-widest uppercase transition-all transform hover:scale-105 active:scale-95 shadow-xl">Dismiss</button>
+            <button onclick="dismissTimerOverlay()"
+                class="mt-8 bg-blue-600 hover:bg-blue-500 text-white px-12 py-4 rounded-full font-bold text-xs tracking-widest uppercase transition-all transform hover:scale-105 active:scale-95 shadow-xl">Dismiss</button>
         </div>
     </div>
 
@@ -270,16 +379,26 @@
         <div class="flex items-center space-x-6 mb-12 z-20">
             <div class="flex items-center space-x-2">
                 <button onclick="toggleLargeView()" id="btn-fullscreen" class="control-btn" title="Toggle Large View">
-                    <svg id="fullscreen-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+                    <svg id="fullscreen-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3">
+                        </path>
+                    </svg>
                 </button>
                 <button onclick="toggleTheme()" class="control-btn" title="Toggle Theme">
-                    <svg id="theme-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"></svg>
+                    <svg id="theme-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2"></svg>
                 </button>
-                <button id="toggle-seconds" onclick="toggleSeconds()" class="control-btn active" title="Show/Hide Seconds">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <button id="toggle-seconds" onclick="toggleSeconds()" class="control-btn active"
+                    title="Show/Hide Seconds">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
                 </button>
             </div>
-            
+
             <div class="flex space-x-10 text-[10px] font-bold uppercase tracking-[0.2em]">
                 <button onclick="showTab('clock')" id="tab-clock" class="tab-button active">Clock</button>
                 <button onclick="showTab('timer')" id="tab-timer" class="tab-button">Timer</button>
@@ -288,7 +407,8 @@
 
         <div id="view-clock" class="flex flex-col items-center">
             <div class="flex items-center" id="clock-digits"></div>
-            <div id="date-display" class="mt-8 text-gray-500 font-medium tracking-[0.4em] uppercase text-[10px] md:text-xs"></div>
+            <div id="date-display"
+                class="mt-8 text-gray-500 font-medium tracking-[0.4em] uppercase text-[10px] md:text-xs"></div>
         </div>
 
         <div id="view-timer" class="hidden flex flex-col items-center">
@@ -301,26 +421,35 @@
                     <div class="text-gray-400 font-bold">:</div>
                     <input type="number" id="input-sec" class="timer-input" value="00">
                 </div>
-                <button onclick="startTimer()" class="bg-blue-600 hover:bg-blue-500 text-white px-14 py-4 rounded-full font-bold text-xs tracking-widest uppercase transition-colors shadow-lg">Start Timer</button>
+                <button onclick="startTimer()"
+                    class="bg-blue-600 hover:bg-blue-500 text-white px-14 py-4 rounded-full font-bold text-xs tracking-widest uppercase transition-colors shadow-lg">Start
+                    Timer</button>
             </div>
             <div id="timer-running" class="hidden flex space-x-4">
-                <button id="pause-btn" onclick="togglePause()" class="bg-gray-500/20 text-current px-10 py-4 rounded-full text-xs tracking-widest uppercase">Pause</button>
-                <button onclick="stopTimer()" class="bg-red-500/10 text-red-500 px-10 py-4 rounded-full text-xs tracking-widest uppercase border border-red-500/20">Reset</button>
+                <button id="pause-btn" onclick="togglePause()"
+                    class="bg-gray-500/20 text-current px-10 py-4 rounded-full text-xs tracking-widest uppercase">Pause</button>
+                <button onclick="stopTimer()"
+                    class="bg-red-500/10 text-red-500 px-10 py-4 rounded-full text-xs tracking-widest uppercase border border-red-500/20">Reset</button>
             </div>
         </div>
 
         <div id="quote-wrapper" class="mt-16 flex items-center group">
             <button onclick="fetchQuote()" class="quote-nav-btn p-2" title="Previous Advice">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 18l-6-6 6-6" />
+                </svg>
             </button>
-            
+
             <div id="quote-container" class="px-6">
                 <p id="quote-text" class="text-sm md:text-base lg:text-lg text-gray-500 italic font-light"></p>
-                <span id="quote-author" class="block mt-2 text-[10px] lg:text-xs text-gray-400 uppercase tracking-widest"></span>
+                <span id="quote-author"
+                    class="block mt-2 text-[10px] lg:text-xs text-gray-400 uppercase tracking-widest"></span>
             </div>
 
             <button onclick="fetchQuote()" class="quote-nav-btn p-2" title="Next Advice">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 18l6-6-6-6" />
+                </svg>
             </button>
         </div>
     </div>
@@ -329,7 +458,7 @@
 
     <script>
         let showSeconds = true;
-        
+
         function createDigitHTML(id) {
             return `
                 <div id="${id}" class="flip-unit">
@@ -350,13 +479,13 @@
 
         clockIds.forEach((id, i) => {
             clockContainer.innerHTML += createDigitHTML(id);
-            if(i === 1) clockContainer.innerHTML += `<div id="sep-hm" class="sep"><div>•</div><div>•</div></div>`;
-            if(i === 3) clockContainer.innerHTML += `<div id="sep-ms" class="sep"><div>•</div><div>•</div></div>`;
+            if (i === 1) clockContainer.innerHTML += `<div id="sep-hm" class="sep"><div>•</div><div>•</div></div>`;
+            if (i === 3) clockContainer.innerHTML += `<div id="sep-ms" class="sep"><div>•</div><div>•</div></div>`;
         });
         timerIds.forEach((id, i) => {
             timerContainer.innerHTML += createDigitHTML(id);
-            if(i === 1) timerContainer.innerHTML += `<div id="sep-t-hm" class="sep"><div>•</div><div>•</div></div>`;
-            if(i === 3) timerContainer.innerHTML += `<div id="sep-t-ms" class="sep"><div>•</div><div>•</div></div>`;
+            if (i === 1) timerContainer.innerHTML += `<div id="sep-t-hm" class="sep"><div>•</div><div>•</div></div>`;
+            if (i === 3) timerContainer.innerHTML += `<div id="sep-t-ms" class="sep"><div>•</div><div>•</div></div>`;
         });
 
         function flipTo(elementId, nextValue) {
@@ -377,7 +506,7 @@
             flapBack.textContent = nextValue;
 
             flap.classList.remove('flipping');
-            
+
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
                     flap.classList.add('flipping');
@@ -396,7 +525,7 @@
                 String(now.getMinutes()).padStart(2, '0'),
                 String(now.getSeconds()).padStart(2, '0')
             ].join('').split('');
-            
+
             clockIds.forEach((id, i) => {
                 if (showSeconds || i < 4) {
                     flipTo(id, time[i]);
@@ -412,11 +541,11 @@
             const btn = document.getElementById('toggle-seconds');
             const clockSUnits = [document.getElementById('c-s1'), document.getElementById('c-s2'), document.getElementById('sep-ms')];
             const timerSUnits = [document.getElementById('t-s1'), document.getElementById('t-s2'), document.getElementById('sep-t-ms')];
-            
+
             btn.classList.toggle('active', showSeconds);
             clockSUnits.forEach(el => el.classList.toggle('hidden', !showSeconds));
             timerSUnits.forEach(el => el.classList.toggle('hidden', !showSeconds));
-            
+
             updateClock();
             refreshTimerUI();
         }
@@ -449,7 +578,7 @@
         }
 
         function handleTimerEnd() {
-            document.getElementById('beep-sound').play().catch(()=>{});
+            document.getElementById('beep-sound').play().catch(() => { });
             document.getElementById('timer-overlay').classList.add('active');
             timerIds.forEach(id => {
                 document.getElementById(id).classList.add('timer-finished');
@@ -525,12 +654,12 @@
             btn.classList.toggle('active', isLarge);
             if (isLarge) {
                 if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen().catch(() => {});
+                    document.documentElement.requestFullscreen().catch(() => { });
                 }
                 icon.innerHTML = '<path d="M4 14h6v6M20 10h-6V4M14 20h-4v-6h6M10 4v6H4"></path>';
             } else {
                 if (document.exitFullscreen && document.fullscreenElement) {
-                    document.exitFullscreen().catch(() => {});
+                    document.exitFullscreen().catch(() => { });
                 }
                 icon.innerHTML = '<path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>';
             }
@@ -538,7 +667,7 @@
 
         function updateThemeIcon() {
             const icon = document.getElementById('theme-icon');
-            if(document.body.classList.contains('light-theme')) {
+            if (document.body.classList.contains('light-theme')) {
                 icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
             } else {
                 icon.innerHTML = '<path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"></path>';
@@ -559,4 +688,5 @@
         applySystemTheme();
     </script>
 </body>
+
 </html>
