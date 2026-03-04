@@ -6,7 +6,7 @@
 
 A sleek, minimalist, web-based flip clock and countdown timer inspired by the clean aesthetics of macOS. Built entirely with vanilla JavaScript, CSS 3D transforms, and Tailwind CSS. No build tools or complex frameworks required—just open and run!
 
-[**🔴 View Live Demo Here**](https://drarahimi.github.io/clock-timer/) ---
+[**🔴 View Live Demo Here**](https://drarahimi.github.io/clock-timer/)
 
 ## ✨ Features
 
