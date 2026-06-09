@@ -92,26 +92,7 @@
             transition: width 0.3s ease, height 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .flip-unit.timer-finished {
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
-            animation: shake 0.5s ease-in-out infinite;
-        }
 
-        @keyframes shake {
-
-            0%,
-            100% {
-                transform: translateX(0);
-            }
-
-            25% {
-                transform: translateX(-2px);
-            }
-
-            75% {
-                transform: translateX(2px);
-            }
-        }
 
         @media (min-width: 768px) {
             .flip-unit {
@@ -380,28 +361,7 @@
             margin-top: 5vh !important;
         }
 
-        /* Exam Setup Input Fields */
-        .exam-info-input {
-            background: var(--flip-bg);
-            border: 2px solid var(--sep-color);
-            outline: none;
-            color: var(--text-main);
-            border-radius: 12px;
-            width: 100%;
-            max-width: 320px;
-            padding: 10px 16px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-        .exam-info-input::placeholder {
-            color: var(--text-dim);
-            opacity: 0.6;
-        }
-        .exam-info-input:focus {
-            border-color: #3b82f6;
-        }
+
 
 
 
@@ -425,23 +385,119 @@
             transition: width 1s linear, background-color 0.5s ease;
         }
 
+        .rule-input-container {
+            max-height: 120px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+        .rule-input-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        .rule-input-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .rule-input-container::-webkit-scrollbar-thumb {
+            background: var(--sep-color);
+            border-radius: 4px;
+        }
+        .rule-item-input {
+            background: var(--flip-bg);
+            border: 2px solid var(--sep-color);
+            outline: none;
+            color: var(--text-main);
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 0.825rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .rule-item-input:focus {
+            border-color: #3b82f6;
+        }
 
-        /* Silent Visual Alarm Overlay flash animation */
-        @keyframes silent-flash-dark {
-            0%, 100% { background: rgba(0, 0, 0, 0.85); }
-            50% { background: rgba(239, 68, 68, 0.35); }
+        /* Pre-Exam Rules Animations */
+        @keyframes fadeInPage {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes silent-flash-light {
-            0%, 100% { background: rgba(255, 255, 255, 0.85); }
-            50% { background: rgba(239, 68, 68, 0.25); }
-        }
-        #timer-overlay.silent-alarm-flash {
-            animation: silent-flash-dark 2s infinite ease-in-out;
-        }
-        .light-theme #timer-overlay.silent-alarm-flash {
-            animation: silent-flash-light 2s infinite ease-in-out;
+        .animate-fade-in-page {
+            animation: fadeInPage 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
+        @keyframes slideInRule {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .rules-list-item {
+            opacity: 0;
+            animation: slideInRule 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Apple/Google Developer continuous background blobs */
+        @keyframes rotateBlob {
+            0% {
+                transform: translate(0px, 0px) rotate(0deg);
+            }
+            33% {
+                transform: translate(30px, -50px) rotate(120deg);
+            }
+            66% {
+                transform: translate(-20px, 20px) rotate(240deg);
+            }
+            100% {
+                transform: translate(0px, 0px) rotate(360deg);
+            }
+        }
+        
+        .developer-bg {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            overflow: hidden;
+            border-radius: 24px;
+            filter: blur(80px);
+            opacity: 0.12;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+        
+        .light-theme .developer-bg {
+            opacity: 0.22;
+        }
+
+        .blob {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            border-radius: 50%;
+            mix-blend-mode: multiply;
+        }
+        
+        .light-theme .blob {
+            mix-blend-mode: normal;
+        }
+
+        .blob-1 {
+            top: -10%;
+            left: -10%;
+            background: radial-gradient(circle, #3b82f6 0%, rgba(59, 130, 246, 0) 70%);
+            animation: rotateBlob 20s infinite alternate ease-in-out;
+        }
+
+        .blob-2 {
+            bottom: -10%;
+            right: -10%;
+            background: radial-gradient(circle, #a855f7 0%, rgba(168, 85, 247, 0) 70%);
+            animation: rotateBlob 25s infinite alternate-reverse ease-in-out;
+        }
+        
+        .blob-3 {
+            top: 40%;
+            left: 30%;
+            background: radial-gradient(circle, #14b8a6 0%, rgba(20, 184, 166, 0) 70%);
+            animation: rotateBlob 22s infinite alternate ease-in-out;
+            animation-delay: -5s;
+        }
         .hidden {
             display: none !important;
         }
@@ -464,38 +520,7 @@
             background: rgba(59, 130, 246, 0.1);
         }
 
-        /* Timer Finished Overlay */
-        #timer-overlay {
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            display: none;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
 
-        #timer-overlay.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .light-theme #timer-overlay {
-            background: rgba(255, 255, 255, 0.85);
-        }
-
-        .pulse-text {
-            animation: text-pulse 2s infinite ease-in-out;
-        }
-
-        @keyframes text-pulse {
-            0%, 100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            50% {
-                transform: scale(1.05);
-                opacity: 0.8;
-            }
-        }
 
 
     </style>
@@ -513,23 +538,7 @@
         Stay Awake
     </div>
 
-    <!-- Timer Finished Overlay -->
-    <div id="timer-overlay" class="fixed inset-0 z-[200] flex-col items-center justify-center text-center p-6">
-        <div class="space-y-6">
-            <div id="timer-alarm-icon"
-                class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                </svg>
-            </div>
-            <h2 class="text-4xl md:text-6xl font-bold tracking-tight pulse-text">Time's Up</h2>
-            <p class="text-gray-500 uppercase tracking-[0.3em] text-xs">Your countdown has finished</p>
-            <button onclick="dismissTimerOverlay()"
-                class="mt-8 bg-blue-600 hover:bg-blue-500 text-white px-12 py-4 rounded-full font-bold text-xs tracking-widest uppercase transition-all transform hover:scale-105 active:scale-95 shadow-xl">Dismiss</button>
-        </div>
-    </div>
+
 
     <div id="main-panel" class="w-full max-w-6xl p-4 relative flex flex-col items-center">
         <div class="flex items-center space-x-6 mb-12 z-20">
@@ -561,11 +570,7 @@
             </div>
         </div>
 
-        <!-- Exam Header (Course Name and Rules) -->
-        <div id="exam-header" class="hidden text-center mb-6 z-20">
-            <h1 id="exam-display-title" class="text-xl md:text-3xl font-bold tracking-wider text-current uppercase opacity-90"></h1>
-            <p id="exam-display-rules" class="text-xs md:text-base tracking-widest text-current opacity-60 uppercase mt-2"></p>
-        </div>
+
 
         <div id="view-clock" class="flex flex-col items-center">
             <div class="flex items-center" id="clock-digits"></div>
@@ -600,19 +605,77 @@
 
                 <hr class="w-full border-t border-[var(--sep-color)] opacity-30 my-1">
 
-                <!-- Exam Details Section -->
+                <!-- Pre-Start Rules Setup Section -->
                 <div class="flex flex-col items-center space-y-3 w-full">
-                    <span class="text-[10px] tracking-widest uppercase font-bold text-gray-400">Exam Details (Optional)</span>
-                    <input type="text" id="input-exam-title" placeholder="Exam Title / Course Code" class="exam-info-input">
-                    <input type="text" id="input-exam-rules" placeholder="Exam Rules (e.g. Closed Book)" class="exam-info-input">
-                    <label class="flex items-center space-x-2 text-[10px] tracking-wider uppercase font-bold text-gray-500 hover:text-gray-400 cursor-pointer select-none mt-1 transition-colors">
-                        <input type="checkbox" id="input-exam-silent" class="rounded border-gray-600 bg-transparent text-blue-600 focus:ring-0 w-3.5 h-3.5 cursor-pointer">
-                        <span>Silent Visual Alarm</span>
-                    </label>
+                    <span class="text-[10px] tracking-widest uppercase font-bold text-gray-400">Pre-Start Rules (Optional)</span>
+                    <div id="rules-input-container" class="rule-input-container flex flex-col space-y-2 w-full pr-1">
+                        <!-- Rule inputs dynamically rendered here -->
+                    </div>
+                    <button type="button" onclick="addNewRuleInput()" class="text-[10px] font-bold text-blue-500 hover:text-blue-400 transition-colors uppercase tracking-wider flex items-center space-x-1 mt-1 cursor-pointer">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        <span>Add Rule</span>
+                    </button>
                 </div>
 
-                <button onclick="startTimer()"
-                    class="bg-blue-600 hover:bg-blue-500 text-white w-full py-3.5 rounded-xl font-bold text-xs tracking-widest uppercase transition-colors shadow-lg mt-2">Start Timer</button>
+                <hr class="w-full border-t border-[var(--sep-color)] opacity-20 my-1">
+
+                <!-- Post-Exam Rules Setup Section -->
+                <div class="flex flex-col items-center space-y-3 w-full">
+                    <span class="text-[10px] tracking-widest uppercase font-bold text-gray-400">Post-Exam Rules (Optional)</span>
+                    <div id="post-rules-input-container" class="rule-input-container flex flex-col space-y-2 w-full pr-1">
+                        <!-- Post rule inputs dynamically rendered here -->
+                    </div>
+                    <button type="button" onclick="addNewPostRuleInput()" class="text-[10px] font-bold text-blue-500 hover:text-blue-400 transition-colors uppercase tracking-wider flex items-center space-x-1 mt-1 cursor-pointer">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        <span>Add Rule</span>
+                    </button>
+                </div>
+
+                <button onclick="reviewRulesOrStart()"
+                    class="bg-blue-600 hover:bg-blue-500 text-white w-full py-3.5 rounded-xl font-bold text-xs tracking-widest uppercase transition-colors shadow-lg mt-2 cursor-pointer">Start Timer</button>
+            </div>
+
+            <!-- Pre-Start Rules Presentation Screen -->
+            <div id="view-rules" class="hidden flex flex-col items-center w-full max-w-[98vw] px-4 py-4 animate-fade-in-page">
+                <h2 class="text-2xl md:text-5xl font-bold tracking-wider text-center mb-10 uppercase opacity-90">Pre-Start Instructions</h2>
+                <div class="w-full bg-[var(--panel-bg)] border border-[var(--sep-color)] rounded-3xl p-8 md:p-12 space-y-6 shadow-2xl relative overflow-hidden">
+                    <div class="developer-bg">
+                        <div class="blob blob-1"></div>
+                        <div class="blob blob-2"></div>
+                        <div class="blob blob-3"></div>
+                    </div>
+                    <ol id="rules-display-list" class="list-decimal list-inside text-lg md:text-3xl space-y-6 font-semibold opacity-85 leading-relaxed">
+                        <!-- Rules listed here -->
+                    </ol>
+                </div>
+                <div class="flex space-x-6 mt-12">
+                    <button onclick="showTimerSetup()" class="bg-gray-500/20 hover:bg-gray-500/30 text-current px-10 py-4 rounded-xl text-sm tracking-widest uppercase transition-colors font-bold cursor-pointer">Back</button>
+                    <button onclick="beginCountdown()" class="bg-blue-600 hover:bg-blue-500 text-white px-14 py-4 rounded-xl font-bold text-sm tracking-widest uppercase transition-colors shadow-xl cursor-pointer">Start Countdown</button>
+                </div>
+            </div>
+
+            <!-- Post-Exam Rules Presentation Screen -->
+            <div id="view-post-rules" class="hidden flex flex-col items-center w-full max-w-[98vw] px-4 py-4 animate-fade-in-page">
+                <h2 class="text-2xl md:text-5xl font-bold tracking-wider text-center mb-10 uppercase opacity-90 text-red-500">Exam Concluded</h2>
+                <div class="w-full bg-[var(--panel-bg)] border border-[var(--sep-color)] rounded-3xl p-8 md:p-12 space-y-6 shadow-2xl relative overflow-hidden">
+                    <div class="developer-bg">
+                        <div class="blob blob-1"></div>
+                        <div class="blob blob-2"></div>
+                        <div class="blob blob-3"></div>
+                    </div>
+                    <ol id="post-rules-display-list" class="list-decimal list-inside text-lg md:text-3xl space-y-6 font-semibold opacity-85 leading-relaxed">
+                        <!-- Rules listed here -->
+                    </ol>
+                </div>
+                <div class="flex space-x-6 mt-12">
+                    <button onclick="stopTimer()" class="bg-blue-600 hover:bg-blue-500 text-white px-14 py-4 rounded-xl font-bold text-sm tracking-widest uppercase transition-colors shadow-xl cursor-pointer">Return to Setup</button>
+                </div>
             </div>
             <div id="timer-running" class="hidden flex flex-col items-center space-y-6">
                 <div class="flex space-x-4">
@@ -748,7 +811,7 @@
             refreshTimerUI();
         }
 
-        let timerInt, timeLeft = 0, isPaused = false, timerDuration = 0, isSilentAlarm = false;
+        let timerInt, timeLeft = 0, isPaused = false, timerDuration = 0;
 
         function setPreset(h, m, s) {
             document.getElementById('input-hr').value = String(h).padStart(2, '0');
@@ -774,7 +837,152 @@
             }
         }
 
-        function startTimer() {
+        const defaultRules = [
+            "Find your name (alphabetical by last name, snaking front-to-back)",
+            "Read cover page and sign it",
+            "Remove caps / hats",
+            "Have your IDs on the desk",
+            "Remain quiet at all times",
+            "You cannot leave in the first 30 minutes and last 5 minutes"
+        ];
+
+        let activeRules = [];
+        try {
+            const stored = localStorage.getItem('timer_rules');
+            if (stored) {
+                activeRules = JSON.parse(stored);
+            } else {
+                activeRules = [...defaultRules];
+            }
+        } catch (e) {
+            activeRules = [...defaultRules];
+        }
+
+        function saveRules() {
+            const container = document.getElementById('rules-input-container');
+            if (!container) return;
+            const inputs = container.querySelectorAll('.rule-item-input');
+            activeRules = Array.from(inputs).map(input => input.value.trim()).filter(val => val !== '');
+            localStorage.setItem('timer_rules', JSON.stringify(activeRules));
+        }
+
+        function renderRulesEditor() {
+            const container = document.getElementById('rules-input-container');
+            if (!container) return;
+            container.innerHTML = '';
+            activeRules.forEach((rule, idx) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'flex items-center space-x-2 w-full group';
+                itemDiv.innerHTML = `
+                    <span class="text-xs font-bold text-gray-500 min-w-[14px]">${idx + 1}.</span>
+                    <input type="text" class="rule-item-input flex-1" placeholder="Rule instruction..." value="${rule.replace(/"/g, '&quot;')}" oninput="saveRules()">
+                    <button type="button" onclick="deleteRuleInput(${idx})" class="text-red-500 hover:text-red-400 p-1 rounded hover:bg-red-500/10 transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 cursor-pointer" title="Delete Rule">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                    </button>
+                `;
+                container.appendChild(itemDiv);
+            });
+        }
+
+        function addNewRuleInput() {
+            saveRules();
+            activeRules.push('');
+            renderRulesEditor();
+            const container = document.getElementById('rules-input-container');
+            if (container) {
+                const inputs = container.querySelectorAll('.rule-item-input');
+                if (inputs.length > 0) {
+                    inputs[inputs.length - 1].focus();
+                }
+            }
+        }
+
+        function deleteRuleInput(idx) {
+            saveRules();
+            activeRules.splice(idx, 1);
+            renderRulesEditor();
+            saveRules();
+        }
+
+        const defaultPostRules = [
+            "Stop writing immediately and close your exam paper",
+            "Remain seated and quiet until all exams are collected",
+            "You need to hand in your formula sheet with your exam",
+            "Exit the room quietly once dismissed by the proctor"
+        ];
+
+        let activePostRules = [];
+        try {
+            const storedPost = localStorage.getItem('timer_post_rules');
+            if (storedPost) {
+                activePostRules = JSON.parse(storedPost);
+                // Migrate: automatically replace the old default ID verification instruction with the formula sheet instruction
+                const oldIdRule = "Have your ID ready on your desk for verification";
+                const idx = activePostRules.indexOf(oldIdRule);
+                if (idx !== -1) {
+                    activePostRules[idx] = "You need to hand in your formula sheet with your exam";
+                    localStorage.setItem('timer_post_rules', JSON.stringify(activePostRules));
+                }
+            } else {
+                activePostRules = [...defaultPostRules];
+            }
+        } catch (e) {
+            activePostRules = [...defaultPostRules];
+        }
+
+        function savePostRules() {
+            const container = document.getElementById('post-rules-input-container');
+            if (!container) return;
+            const inputs = container.querySelectorAll('.rule-item-input');
+            activePostRules = Array.from(inputs).map(input => input.value.trim()).filter(val => val !== '');
+            localStorage.setItem('timer_post_rules', JSON.stringify(activePostRules));
+        }
+
+        function renderPostRulesEditor() {
+            const container = document.getElementById('post-rules-input-container');
+            if (!container) return;
+            container.innerHTML = '';
+            activePostRules.forEach((rule, idx) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'flex items-center space-x-2 w-full group';
+                itemDiv.innerHTML = `
+                    <span class="text-xs font-bold text-gray-500 min-w-[14px]">${idx + 1}.</span>
+                    <input type="text" class="rule-item-input flex-1" placeholder="Rule instruction..." value="${rule.replace(/"/g, '&quot;')}" oninput="savePostRules()">
+                    <button type="button" onclick="deletePostRuleInput(${idx})" class="text-red-500 hover:text-red-400 p-1 rounded hover:bg-red-500/10 transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 cursor-pointer" title="Delete Rule">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                    </button>
+                `;
+                container.appendChild(itemDiv);
+            });
+        }
+
+        function addNewPostRuleInput() {
+            savePostRules();
+            activePostRules.push('');
+            renderPostRulesEditor();
+            const container = document.getElementById('post-rules-input-container');
+            if (container) {
+                const inputs = container.querySelectorAll('.rule-item-input');
+                if (inputs.length > 0) {
+                    inputs[inputs.length - 1].focus();
+                }
+            }
+        }
+
+        function deletePostRuleInput(idx) {
+            savePostRules();
+            activePostRules.splice(idx, 1);
+            renderPostRulesEditor();
+            savePostRules();
+        }
+
+        function reviewRulesOrStart() {
             const h = parseInt(document.getElementById('input-hr').value) || 0;
             const m = parseInt(document.getElementById('input-min').value) || 0;
             const s = parseInt(document.getElementById('input-sec').value) || 0;
@@ -782,35 +990,46 @@
             if (timeLeft <= 0) return;
 
             timerDuration = timeLeft;
-            isSilentAlarm = document.getElementById('input-exam-silent').checked;
+            saveRules();
 
-            // Setup Exam Header
-            const examTitle = document.getElementById('input-exam-title').value.trim();
-            const examRules = document.getElementById('input-exam-rules').value.trim();
-            
-            // Save to localStorage
-            localStorage.setItem('exam_title', examTitle);
-            localStorage.setItem('exam_rules', examRules);
-            localStorage.setItem('exam_silent', isSilentAlarm);
+            if (activeRules.length > 0) {
+                const list = document.getElementById('rules-display-list');
+                if (list) {
+                    list.innerHTML = '';
+                    activeRules.forEach((rule, idx) => {
+                        const li = document.createElement('li');
+                        li.textContent = rule;
+                        li.className = 'rules-list-item whitespace-nowrap';
+                        li.style.animationDelay = `${idx * 100}ms`;
+                        list.appendChild(li);
+                    });
+                }
 
-            const examHeader = document.getElementById('exam-header');
-            if (examTitle || examRules) {
-                document.getElementById('exam-display-title').textContent = examTitle || "Exam in Progress";
-                document.getElementById('exam-display-rules').textContent = examRules;
-                examHeader.classList.remove('hidden');
+                document.getElementById('timer-setup').classList.add('hidden');
+                document.getElementById('view-rules').classList.remove('hidden');
             } else {
-                examHeader.classList.add('hidden');
+                beginCountdown();
             }
+        }
 
-            // Show Progress Bar
+        function beginCountdown() {
+            const viewRules = document.getElementById('view-rules');
+            if (viewRules) viewRules.classList.add('hidden');
+            document.getElementById('timer-setup').classList.add('hidden');
+
             document.getElementById('progress-bar-container').classList.remove('hidden');
             updateProgressBar();
 
             document.getElementById('timer-digits').classList.remove('hidden');
-            document.getElementById('timer-setup').classList.add('hidden');
             document.getElementById('timer-running').classList.remove('hidden');
             isPaused = false;
             runTimer();
+        }
+
+        function showTimerSetup() {
+            const viewRules = document.getElementById('view-rules');
+            if (viewRules) viewRules.classList.add('hidden');
+            document.getElementById('timer-setup').classList.remove('hidden');
         }
 
         function updateProgressBar() {
@@ -836,49 +1055,42 @@
         }
 
         function handleTimerEnd() {
-            const overlay = document.getElementById('timer-overlay');
-            const iconContainer = document.getElementById('timer-alarm-icon');
-            
-            if (isSilentAlarm) {
-                overlay.classList.add('silent-alarm-flash');
-                overlay.querySelector('.pulse-text').textContent = "Time's Up (Silent)";
-                // Render silent bell SVG
-                iconContainer.innerHTML = `
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                        <path d="M18.85 13.85A6 6 0 0 0 18 8a6 6 0 0 0-6-6c-1.5 0-3 .6-4 1.72"></path>
-                        <path d="M2 2l20 20"></path>
-                        <path d="M3 17h14"></path>
-                    </svg>`;
-                iconContainer.classList.replace('bg-blue-600', 'bg-red-500');
+            document.getElementById('beep-sound').play().catch(() => { });
+
+            // Clear countdown interval
+            clearInterval(timerInt);
+            timeLeft = 0;
+            timerDuration = 0;
+
+            // Hide clock digits, running overlay, progress bar
+            document.getElementById('timer-digits').classList.add('hidden');
+            document.getElementById('timer-running').classList.add('hidden');
+            document.getElementById('progress-bar-container').classList.add('hidden');
+
+            savePostRules();
+            if (activePostRules.length > 0) {
+                // Render and show post exam rules
+                const list = document.getElementById('post-rules-display-list');
+                if (list) {
+                    list.innerHTML = '';
+                    activePostRules.forEach((rule, idx) => {
+                        const li = document.createElement('li');
+                        li.textContent = rule;
+                        li.className = 'rules-list-item whitespace-nowrap';
+                        li.style.animationDelay = `${idx * 100}ms`;
+                        list.appendChild(li);
+                    });
+                }
+                document.getElementById('timer-setup').classList.add('hidden');
+                document.getElementById('view-post-rules').classList.remove('hidden');
+
+                // Reset countdown numbers on background plates
+                timerIds.forEach(id => {
+                    flipTo(id, '0');
+                });
             } else {
-                document.getElementById('beep-sound').play().catch(() => { });
-                overlay.classList.remove('silent-alarm-flash');
-                overlay.querySelector('.pulse-text').textContent = "Time's Up";
-                // Render ringing bell SVG
-                iconContainer.innerHTML = `
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                    </svg>`;
-                iconContainer.classList.replace('bg-red-500', 'bg-blue-600');
+                stopTimer();
             }
-
-            overlay.classList.add('active');
-            timerIds.forEach(id => {
-                document.getElementById(id).classList.add('timer-finished');
-            });
-        }
-
-        function dismissTimerOverlay() {
-            const overlay = document.getElementById('timer-overlay');
-            overlay.classList.remove('active', 'silent-alarm-flash');
-            timerIds.forEach(id => {
-                document.getElementById(id).classList.remove('timer-finished');
-            });
-            stopTimer();
         }
 
         function refreshTimerUI() {
@@ -900,15 +1112,17 @@
             
             // Clean exam displays & states
             document.getElementById('timer-digits').classList.add('hidden');
+            const viewRules = document.getElementById('view-rules');
+            if (viewRules) viewRules.classList.add('hidden');
+            const viewPostRules = document.getElementById('view-post-rules');
+            if (viewPostRules) viewPostRules.classList.add('hidden');
             document.getElementById('timer-setup').classList.remove('hidden');
             document.getElementById('timer-running').classList.add('hidden');
 
-            document.getElementById('exam-header').classList.add('hidden');
             document.getElementById('progress-bar-container').classList.add('hidden');
 
             timerIds.forEach(id => {
                 flipTo(id, '0');
-                document.getElementById(id).classList.remove('timer-finished');
             });
         }
         function togglePause() { isPaused = !isPaused; document.getElementById('pause-btn').textContent = isPaused ? 'Resume' : 'Pause'; }
@@ -918,6 +1132,19 @@
             document.getElementById('view-timer').classList.toggle('hidden', tab !== 'timer');
             document.getElementById('tab-clock').classList.toggle('active', tab === 'clock');
             document.getElementById('tab-timer').classList.toggle('active', tab === 'timer');
+
+            // Persist tab selection
+            localStorage.setItem('active_tab', tab);
+
+            // Toggle quotes visibility (hide on timer pages entirely)
+            const quoteWrapper = document.getElementById('quote-wrapper');
+            if (quoteWrapper) {
+                if (tab === 'clock') {
+                    quoteWrapper.classList.remove('hidden');
+                } else {
+                    quoteWrapper.classList.add('hidden');
+                }
+            }
         }
 
         const engineeringQuotes = [
@@ -992,14 +1219,12 @@
             setInterval(() => {
                 renderQuote(1);
             }, 90000);
+            renderRulesEditor();
+            renderPostRulesEditor();
 
-            // Load saved exam details
-            const savedTitle = localStorage.getItem('exam_title');
-            const savedRules = localStorage.getItem('exam_rules');
-            const savedSilent = localStorage.getItem('exam_silent');
-            if (savedTitle !== null) document.getElementById('input-exam-title').value = savedTitle;
-            if (savedRules !== null) document.getElementById('input-exam-rules').value = savedRules;
-            if (savedSilent !== null) document.getElementById('input-exam-silent').checked = (savedSilent === 'true');
+            // Restore persistent tab selection
+            const savedTab = localStorage.getItem('active_tab') || 'clock';
+            showTab(savedTab);
         });
 
         function toggleLargeView() {
