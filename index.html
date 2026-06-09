@@ -26,9 +26,9 @@
             --text-main: #ffffff;
             --text-dim: #666;
 
-            --unit-h: 90px;
-            --unit-w: 60px;
-            --font-sz: 65px;
+            --unit-h: 110px;
+            --unit-w: 75px;
+            --font-sz: 80px;
         }
 
         body.light-theme {
@@ -43,18 +43,30 @@
 
         @media (min-width: 768px) {
             :root {
-                --unit-h: 160px;
-                --unit-w: 110px;
-                --font-sz: 120px;
+                --unit-h: 210px;
+                --unit-w: 140px;
+                --font-sz: 160px;
+            }
+            body.hide-seconds {
+                --unit-h: 260px;
+                --unit-w: 180px;
+                --font-sz: 200px;
             }
         }
 
         /* Large Screen / Simulated Fullscreen sizing */
         body.large-view {
-            --unit-h: 25vh !important;
-            --unit-w: 18vh !important;
-            --font-sz: 20vh !important;
-            --flip-radius: 24px !important;
+            --unit-h: 32vh !important;
+            --unit-w: 22vh !important;
+            --font-sz: 25vh !important;
+            --flip-radius: 28px !important;
+        }
+
+        body.large-view.hide-seconds {
+            --unit-h: 42vh !important;
+            --unit-w: 28vh !important;
+            --font-sz: 35vh !important;
+            --flip-radius: 36px !important;
         }
 
         body {
@@ -272,23 +284,162 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 8px;
-            font-size: 24px;
+            gap: 12px;
+            font-size: 32px;
             transition: color 0.5s ease;
         }
 
         @media (min-width: 768px) {
             .sep {
-                gap: 30px;
-                font-size: 60px;
+                gap: 40px;
+                font-size: 90px;
             }
+        }
+
+        body.large-view .sep {
+            gap: 6vh !important;
+            font-size: 12vh !important;
         }
 
         #quote-container {
             transition: opacity 0.6s ease;
-            max-width: 800px;
+            max-width: 1000px;
             text-align: center;
-            min-height: 80px;
+            min-height: 120px;
+        }
+
+        #quote-text {
+            font-size: 1.5rem;
+            line-height: 1.5;
+            color: var(--text-main);
+            opacity: 0.85;
+            transition: color 0.5s ease;
+        }
+
+        #quote-author {
+            font-size: 0.75rem;
+            color: var(--text-main);
+            opacity: 0.6;
+            margin-top: 12px;
+            transition: color 0.5s ease;
+        }
+
+        @media (min-width: 768px) {
+            #quote-container {
+                min-height: 160px;
+            }
+            #quote-text {
+                font-size: 2.25rem;
+            }
+            #quote-author {
+                font-size: 1rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            #quote-text {
+                font-size: 3rem;
+            }
+        }
+
+        /* Large View styling for simulated/native fullscreen */
+        body.large-view #quote-container {
+            max-width: 90vw !important;
+            min-height: 20vh !important;
+        }
+
+        body.large-view #quote-text {
+            font-size: 4.5vh !important;
+            line-height: 1.4 !important;
+        }
+
+        body.large-view #quote-author {
+            font-size: 2vh !important;
+            margin-top: 2vh !important;
+        }
+
+        #date-display {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-main);
+            opacity: 0.7;
+            letter-spacing: 0.3em;
+            margin-top: 2rem;
+            transition: color 0.5s ease;
+        }
+
+        @media (min-width: 768px) {
+            #date-display {
+                font-size: 1.25rem;
+                margin-top: 3rem;
+            }
+        }
+
+        body.large-view #date-display {
+            font-size: 3vh !important;
+            margin-top: 5vh !important;
+        }
+
+        /* Exam Setup Input Fields */
+        .exam-info-input {
+            background: var(--flip-bg);
+            border: 2px solid var(--sep-color);
+            outline: none;
+            color: var(--text-main);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 320px;
+            padding: 10px 16px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .exam-info-input::placeholder {
+            color: var(--text-dim);
+            opacity: 0.6;
+        }
+        .exam-info-input:focus {
+            border-color: #3b82f6;
+        }
+
+
+
+        /* Progress Bar styles */
+        #progress-bar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            z-index: 250;
+        }
+        .light-theme #progress-bar-container {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        #progress-bar {
+            height: 100%;
+            width: 100%;
+            background-color: #3b82f6;
+            transition: width 1s linear, background-color 0.5s ease;
+        }
+
+
+        /* Silent Visual Alarm Overlay flash animation */
+        @keyframes silent-flash-dark {
+            0%, 100% { background: rgba(0, 0, 0, 0.85); }
+            50% { background: rgba(239, 68, 68, 0.35); }
+        }
+        @keyframes silent-flash-light {
+            0%, 100% { background: rgba(255, 255, 255, 0.85); }
+            50% { background: rgba(239, 68, 68, 0.25); }
+        }
+        #timer-overlay.silent-alarm-flash {
+            animation: silent-flash-dark 2s infinite ease-in-out;
+        }
+        .light-theme #timer-overlay.silent-alarm-flash {
+            animation: silent-flash-light 2s infinite ease-in-out;
         }
 
         .hidden {
@@ -336,22 +487,26 @@
         }
 
         @keyframes text-pulse {
-
-            0%,
-            100% {
+            0%, 100% {
                 transform: scale(1);
                 opacity: 1;
             }
-
             50% {
                 transform: scale(1.05);
                 opacity: 0.8;
             }
         }
+
+
     </style>
 </head>
 
 <body>
+
+    <!-- Progress Bar -->
+    <div id="progress-bar-container" class="hidden">
+        <div id="progress-bar"></div>
+    </div>
 
     <div id="wake-status" class="status-pill opacity-0 transition-opacity">
         <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
@@ -361,7 +516,7 @@
     <!-- Timer Finished Overlay -->
     <div id="timer-overlay" class="fixed inset-0 z-[200] flex-col items-center justify-center text-center p-6">
         <div class="space-y-6">
-            <div
+            <div id="timer-alarm-icon"
                 class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -406,48 +561,89 @@
             </div>
         </div>
 
+        <!-- Exam Header (Course Name and Rules) -->
+        <div id="exam-header" class="hidden text-center mb-6 z-20">
+            <h1 id="exam-display-title" class="text-xl md:text-3xl font-bold tracking-wider text-current uppercase opacity-90"></h1>
+            <p id="exam-display-rules" class="text-xs md:text-base tracking-widest text-current opacity-60 uppercase mt-2"></p>
+        </div>
+
         <div id="view-clock" class="flex flex-col items-center">
             <div class="flex items-center" id="clock-digits"></div>
-            <div id="date-display"
-                class="mt-8 text-gray-500 font-medium tracking-[0.4em] uppercase text-[10px] md:text-xs"></div>
+            <div id="date-display" class="uppercase"></div>
         </div>
 
         <div id="view-timer" class="hidden flex flex-col items-center">
-            <div class="flex items-center mb-12" id="timer-digits"></div>
-            <div id="timer-setup" class="flex flex-col items-center space-y-8">
-                <div class="flex items-center space-x-3 md:space-x-6">
-                    <input type="number" id="input-hr" class="timer-input" value="00">
-                    <div class="text-gray-400 font-bold">:</div>
-                    <input type="number" id="input-min" class="timer-input" value="05">
-                    <div class="text-gray-400 font-bold">:</div>
-                    <input type="number" id="input-sec" class="timer-input" value="00">
+            <div class="flex items-center mb-12 hidden" id="timer-digits"></div>
+
+            <div id="timer-setup" class="flex flex-col items-center space-y-6 w-full max-w-md p-6 rounded-2xl bg-[var(--panel-bg)] border border-[var(--sep-color)]">
+                <!-- Time Input Section -->
+                <div class="flex flex-col items-center space-y-3 w-full">
+                    <span class="text-[10px] tracking-widest uppercase font-bold text-gray-400">Set Countdown Duration</span>
+                    <div class="flex items-center space-x-2 md:space-x-4">
+                        <input type="number" id="input-hr" class="timer-input" value="00">
+                        <div class="text-gray-400 font-bold">:</div>
+                        <input type="number" id="input-min" class="timer-input" value="05">
+                        <div class="text-gray-400 font-bold">:</div>
+                        <input type="number" id="input-sec" class="timer-input" value="00">
+                    </div>
                 </div>
+
+                <!-- Presets Section -->
+                <div class="flex flex-wrap justify-center gap-2 w-full text-[10px] font-bold tracking-wider uppercase text-gray-500">
+                    <button onclick="setPreset(0, 5, 0)" class="px-2.5 py-1 rounded-lg border border-gray-700/30 hover:bg-gray-500/10 hover:text-current transition-colors">5m</button>
+                    <button onclick="setPreset(0, 10, 0)" class="px-2.5 py-1 rounded-lg border border-gray-700/30 hover:bg-gray-500/10 hover:text-current transition-colors">10m</button>
+                    <button onclick="setPreset(0, 15, 0)" class="px-2.5 py-1 rounded-lg border border-gray-700/30 hover:bg-gray-500/10 hover:text-current transition-colors">15m</button>
+                    <button onclick="setPreset(0, 30, 0)" class="px-2.5 py-1 rounded-lg border border-gray-700/30 hover:bg-gray-500/10 hover:text-current transition-colors">30m</button>
+                    <button onclick="setPreset(1, 0, 0)" class="px-2.5 py-1 rounded-lg border border-gray-700/30 hover:bg-gray-500/10 hover:text-current transition-colors">1h</button>
+                    <button onclick="setPreset(2, 0, 0)" class="px-2.5 py-1 rounded-lg border border-gray-700/30 hover:bg-gray-500/10 hover:text-current transition-colors">2h</button>
+                </div>
+
+                <hr class="w-full border-t border-[var(--sep-color)] opacity-30 my-1">
+
+                <!-- Exam Details Section -->
+                <div class="flex flex-col items-center space-y-3 w-full">
+                    <span class="text-[10px] tracking-widest uppercase font-bold text-gray-400">Exam Details (Optional)</span>
+                    <input type="text" id="input-exam-title" placeholder="Exam Title / Course Code" class="exam-info-input">
+                    <input type="text" id="input-exam-rules" placeholder="Exam Rules (e.g. Closed Book)" class="exam-info-input">
+                    <label class="flex items-center space-x-2 text-[10px] tracking-wider uppercase font-bold text-gray-500 hover:text-gray-400 cursor-pointer select-none mt-1 transition-colors">
+                        <input type="checkbox" id="input-exam-silent" class="rounded border-gray-600 bg-transparent text-blue-600 focus:ring-0 w-3.5 h-3.5 cursor-pointer">
+                        <span>Silent Visual Alarm</span>
+                    </label>
+                </div>
+
                 <button onclick="startTimer()"
-                    class="bg-blue-600 hover:bg-blue-500 text-white px-14 py-4 rounded-full font-bold text-xs tracking-widest uppercase transition-colors shadow-lg">Start
-                    Timer</button>
+                    class="bg-blue-600 hover:bg-blue-500 text-white w-full py-3.5 rounded-xl font-bold text-xs tracking-widest uppercase transition-colors shadow-lg mt-2">Start Timer</button>
             </div>
-            <div id="timer-running" class="hidden flex space-x-4">
-                <button id="pause-btn" onclick="togglePause()"
-                    class="bg-gray-500/20 text-current px-10 py-4 rounded-full text-xs tracking-widest uppercase">Pause</button>
-                <button onclick="stopTimer()"
-                    class="bg-red-500/10 text-red-500 px-10 py-4 rounded-full text-xs tracking-widest uppercase border border-red-500/20">Reset</button>
+            <div id="timer-running" class="hidden flex flex-col items-center space-y-6">
+                <div class="flex space-x-4">
+                    <button id="pause-btn" onclick="togglePause()"
+                        class="bg-gray-500/20 text-current px-10 py-4 rounded-full text-xs tracking-widest uppercase transition-colors">Pause</button>
+                    <button onclick="stopTimer()"
+                        class="bg-red-500/10 text-red-500 px-10 py-4 rounded-full text-xs tracking-widest uppercase border border-red-500/20 transition-colors">Reset</button>
+                </div>
+                <div class="flex space-x-2 text-[10px] font-bold tracking-wider uppercase text-gray-500">
+                    <button onclick="adjustTime(-300)" class="bg-gray-500/10 hover:bg-gray-500/20 px-4 py-2 rounded-lg transition-colors">-5m</button>
+                    <button onclick="adjustTime(-60)" class="bg-gray-500/10 hover:bg-gray-500/20 px-4 py-2 rounded-lg transition-colors">-1m</button>
+                    <button onclick="adjustTime(60)" class="bg-blue-600/10 text-blue-500 hover:bg-blue-600/20 px-4 py-2 rounded-lg transition-colors">+1m</button>
+                    <button onclick="adjustTime(300)" class="bg-blue-600/10 text-blue-500 hover:bg-blue-600/20 px-4 py-2 rounded-lg transition-colors">+5m</button>
+                </div>
             </div>
         </div>
 
         <div id="quote-wrapper" class="mt-16 flex items-center group">
-            <button onclick="fetchQuote()" class="quote-nav-btn p-2" title="Previous Advice">
+            <button onclick="renderQuote(-1)" class="quote-nav-btn p-2" title="Previous Quote">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M15 18l-6-6 6-6" />
                 </svg>
             </button>
 
             <div id="quote-container" class="px-6">
-                <p id="quote-text" class="text-sm md:text-base lg:text-lg text-gray-500 italic font-light"></p>
+                <p id="quote-text" class="italic font-medium"></p>
                 <span id="quote-author"
-                    class="block mt-2 text-[10px] lg:text-xs text-gray-400 uppercase tracking-widest"></span>
+                    class="block uppercase tracking-widest font-semibold"></span>
             </div>
 
-            <button onclick="fetchQuote()" class="quote-nav-btn p-2" title="Next Advice">
+            <button onclick="renderQuote(1)" class="quote-nav-btn p-2" title="Next Quote">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M9 18l6-6-6-6" />
                 </svg>
@@ -546,29 +742,89 @@
             btn.classList.toggle('active', showSeconds);
             clockSUnits.forEach(el => el.classList.toggle('hidden', !showSeconds));
             timerSUnits.forEach(el => el.classList.toggle('hidden', !showSeconds));
+            document.body.classList.toggle('hide-seconds', !showSeconds);
 
             updateClock();
             refreshTimerUI();
         }
 
-        let timerInt, timeLeft = 0, isPaused = false;
+        let timerInt, timeLeft = 0, isPaused = false, timerDuration = 0, isSilentAlarm = false;
+
+        function setPreset(h, m, s) {
+            document.getElementById('input-hr').value = String(h).padStart(2, '0');
+            document.getElementById('input-min').value = String(m).padStart(2, '0');
+            document.getElementById('input-sec').value = String(s).padStart(2, '0');
+        }
+
+        function adjustTime(seconds) {
+            const timerRunning = !document.getElementById('timer-running').classList.contains('hidden');
+            if (!timerRunning) return;
+
+            if (timeLeft + seconds <= 0) {
+                timeLeft = 0;
+                clearInterval(timerInt);
+                handleTimerEnd();
+            } else {
+                timeLeft += seconds;
+                if (seconds > 0) {
+                    timerDuration += seconds;
+                }
+                refreshTimerUI();
+                updateProgressBar();
+            }
+        }
+
         function startTimer() {
             const h = parseInt(document.getElementById('input-hr').value) || 0;
             const m = parseInt(document.getElementById('input-min').value) || 0;
             const s = parseInt(document.getElementById('input-sec').value) || 0;
             timeLeft = (h * 3600) + (m * 60) + s;
             if (timeLeft <= 0) return;
+
+            timerDuration = timeLeft;
+            isSilentAlarm = document.getElementById('input-exam-silent').checked;
+
+            // Setup Exam Header
+            const examTitle = document.getElementById('input-exam-title').value.trim();
+            const examRules = document.getElementById('input-exam-rules').value.trim();
+            
+            // Save to localStorage
+            localStorage.setItem('exam_title', examTitle);
+            localStorage.setItem('exam_rules', examRules);
+            localStorage.setItem('exam_silent', isSilentAlarm);
+
+            const examHeader = document.getElementById('exam-header');
+            if (examTitle || examRules) {
+                document.getElementById('exam-display-title').textContent = examTitle || "Exam in Progress";
+                document.getElementById('exam-display-rules').textContent = examRules;
+                examHeader.classList.remove('hidden');
+            } else {
+                examHeader.classList.add('hidden');
+            }
+
+            // Show Progress Bar
+            document.getElementById('progress-bar-container').classList.remove('hidden');
+            updateProgressBar();
+
+            document.getElementById('timer-digits').classList.remove('hidden');
             document.getElementById('timer-setup').classList.add('hidden');
             document.getElementById('timer-running').classList.remove('hidden');
             isPaused = false;
             runTimer();
         }
+
+        function updateProgressBar() {
+            const percent = timerDuration > 0 ? (timeLeft / timerDuration) * 100 : 0;
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+        }
+
         function runTimer() {
             clearInterval(timerInt);
             timerInt = setInterval(() => {
                 if (!isPaused) {
                     timeLeft--;
                     refreshTimerUI();
+                    updateProgressBar();
                     if (timeLeft <= 0) {
                         clearInterval(timerInt);
                         handleTimerEnd();
@@ -576,18 +832,49 @@
                 }
             }, 1000);
             refreshTimerUI();
+            updateProgressBar();
         }
 
         function handleTimerEnd() {
-            document.getElementById('beep-sound').play().catch(() => { });
-            document.getElementById('timer-overlay').classList.add('active');
+            const overlay = document.getElementById('timer-overlay');
+            const iconContainer = document.getElementById('timer-alarm-icon');
+            
+            if (isSilentAlarm) {
+                overlay.classList.add('silent-alarm-flash');
+                overlay.querySelector('.pulse-text').textContent = "Time's Up (Silent)";
+                // Render silent bell SVG
+                iconContainer.innerHTML = `
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        <path d="M18.85 13.85A6 6 0 0 0 18 8a6 6 0 0 0-6-6c-1.5 0-3 .6-4 1.72"></path>
+                        <path d="M2 2l20 20"></path>
+                        <path d="M3 17h14"></path>
+                    </svg>`;
+                iconContainer.classList.replace('bg-blue-600', 'bg-red-500');
+            } else {
+                document.getElementById('beep-sound').play().catch(() => { });
+                overlay.classList.remove('silent-alarm-flash');
+                overlay.querySelector('.pulse-text').textContent = "Time's Up";
+                // Render ringing bell SVG
+                iconContainer.innerHTML = `
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>`;
+                iconContainer.classList.replace('bg-red-500', 'bg-blue-600');
+            }
+
+            overlay.classList.add('active');
             timerIds.forEach(id => {
                 document.getElementById(id).classList.add('timer-finished');
             });
         }
 
         function dismissTimerOverlay() {
-            document.getElementById('timer-overlay').classList.remove('active');
+            const overlay = document.getElementById('timer-overlay');
+            overlay.classList.remove('active', 'silent-alarm-flash');
             timerIds.forEach(id => {
                 document.getElementById(id).classList.remove('timer-finished');
             });
@@ -605,11 +892,20 @@
                 }
             });
         }
+
         function stopTimer() {
             clearInterval(timerInt);
             timeLeft = 0;
+            timerDuration = 0;
+            
+            // Clean exam displays & states
+            document.getElementById('timer-digits').classList.add('hidden');
             document.getElementById('timer-setup').classList.remove('hidden');
             document.getElementById('timer-running').classList.add('hidden');
+
+            document.getElementById('exam-header').classList.add('hidden');
+            document.getElementById('progress-bar-container').classList.add('hidden');
+
             timerIds.forEach(id => {
                 flipTo(id, '0');
                 document.getElementById(id).classList.remove('timer-finished');
@@ -624,28 +920,86 @@
             document.getElementById('tab-timer').classList.toggle('active', tab === 'timer');
         }
 
-        async function fetchQuote() {
+        const engineeringQuotes = [
+            { text: "Scientists study the world as it is; engineers create the world that has never been.", author: "Theodore von Kármán" },
+            { text: "Any fool can make something complicated. It takes a genius to make it simple.", author: "Woody Guthrie" },
+            { text: "Simplicity is the ultimate sophistication.", author: "Leonardo da Vinci" },
+            { text: "Make things as simple as possible, but not simpler.", author: "Albert Einstein" },
+            { text: "Anything that can go wrong will go wrong.", author: "Murphy's Law" },
+            { text: "Move fast and break things. Unless you are a civil engineer.", author: "Engineering Proverb" },
+            { text: "The best way to predict the future is to invent it.", author: "Alan Kay" },
+            { text: "I have not failed. I've just found 10,000 ways that won't work.", author: "Thomas A. Edison" },
+            { text: "If you can't explain it simply, you don't understand it well enough.", author: "Albert Einstein" },
+            { text: "An engineer is someone who can do for a dime what any fool can do for a dollar.", author: "Arthur M. Wellington" },
+            { text: "We build too many walls and not enough bridges.", author: "Isaac Newton" },
+            { text: "Nature cannot be fooled.", author: "Richard Feynman" },
+            { text: "Measure twice, cut once.", author: "Workshop Proverb" },
+            { text: "One accurate measurement is worth a thousand expert opinions.", author: "Grace Hopper" },
+            { text: "The science of today is the technology of tomorrow.", author: "Edward Teller" },
+            { text: "If you want to find the secrets of the universe, think in terms of energy, frequency and vibration.", author: "Nikola Tesla" },
+            { text: "Design is not just what it looks like and feels like. Design is how it works.", author: "Steve Jobs" },
+            { text: "Mathematics is the language in which God has written the universe.", author: "Galileo Galilei" },
+            { text: "Engineering is the closest thing to magic that exists in the world.", author: "Elon Musk" },
+            { text: "Good design is as little design as possible.", author: "Dieter Rams" },
+            { text: "Strive for perfection in everything you do. Accept nothing nearly right or nearly good.", author: "Henry Royce" },
+            { text: "Manufacturing is more than just putting parts together.", author: "Henry Ford" },
+            { text: "To the engineer, the world is a toybox full of sub-optimized tools.", author: "Unknown" },
+            { text: "There is nothing so useless as doing efficiently that which should not be done at all.", author: "Peter Drucker" },
+            { text: "I do not think there is any thrill like that felt by the inventor as he sees success.", author: "Nikola Tesla" },
+            { text: "An investment in knowledge pays the best interest.", author: "Benjamin Franklin" },
+            { text: "Engineers turn dreams into reality.", author: "Hayao Miyazaki" },
+            { text: "Equations are more important to me; politics is for the present, but an equation is for eternity.", author: "Albert Einstein" },
+            { text: "If I have seen further, it is by standing on the shoulders of Giants.", author: "Isaac Newton" },
+            { text: "There is no substitute for hard work.", author: "Thomas A. Edison" },
+            { text: "First, rule out the impossible. Whatever remains, however improbable, must be the truth.", author: "Sherlock Holmes" },
+            { text: "Simplicity is the soul of efficiency.", author: "Austin Freeman" },
+            { text: "The problem is not that there are problems. The problem is expecting otherwise.", author: "Theodore Rubin" },
+            { text: "Experience is simply the name we give our mistakes.", author: "Oscar Wilde" },
+            { text: "Quality is not an act, it is a habit.", author: "Aristotle" },
+            { text: "If you can't measure it, you can't improve it.", author: "Lord Kelvin" },
+            { text: "Nature is pleased with simplicity. And nature is no dummy.", author: "Isaac Newton" },
+            { text: "Simplicity, carried to an extreme, becomes elegance.", author: "Jon Franklin" },
+            { text: "A problem well-stated is a problem half-solved.", author: "Charles Kettering" },
+            { text: "It's not that I'm so smart, it's just that I stay with problems longer.", author: "Albert Einstein" },
+            { text: "Design must serve people, reflecting the practical and aesthetic.", author: "Thomas J. Watson" },
+            { text: "Nothing has such power to broaden the mind as systematic investigation.", author: "Marcus Aurelius" },
+            { text: "Science is a way of thinking much more than it is a body of knowledge.", author: "Carl Sagan" },
+            { text: "The best design is the one that gets out of the way.", author: "Dieter Rams" },
+            { text: "In mathematics, proposing a question is of higher value than solving it.", author: "Georg Cantor" },
+            { text: "If you want to understand the machine, look at the output.", author: "Workshop Proverb" },
+            { text: "Action is the foundational key to all success.", author: "Pablo Picasso" },
+            { text: "The history of engineering is the history of solving problems.", author: "Unknown" },
+            { text: "A good tool is an opinionated tool.", author: "Unknown" },
+            { text: "Detail is everything.", author: "Christian Dior" }
+        ];
+
+        let currentQuoteIndex = Math.floor(Math.random() * engineeringQuotes.length);
+
+        function renderQuote(direction = 0) {
             const container = document.getElementById('quote-container');
             container.style.opacity = "0";
-            try {
-                const response = await fetch(`https://api.adviceslip.com/advice?t=${Date.now()}`);
-                if (!response.ok) throw new Error();
-                const data = await response.json();
-                setTimeout(() => {
-                    document.getElementById('quote-text').textContent = `"${data.slip.advice}"`;
-                    document.getElementById('quote-author').textContent = "— Daily Advice";
-                    container.style.opacity = "1";
-                }, 600);
-            } catch (e) {
-                document.getElementById('quote-text').textContent = '"The two most powerful warriors are patience and time."';
-                document.getElementById('quote-author').textContent = "— Leo Tolstoy";
+            setTimeout(() => {
+                currentQuoteIndex = (currentQuoteIndex + direction + engineeringQuotes.length) % engineeringQuotes.length;
+                const quote = engineeringQuotes[currentQuoteIndex];
+                document.getElementById('quote-text').textContent = `"${quote.text}"`;
+                document.getElementById('quote-author').textContent = `— ${quote.author}`;
                 container.style.opacity = "1";
-            }
+            }, 300);
         }
 
         window.addEventListener('load', () => {
-            fetchQuote();
-            setInterval(fetchQuote, 60000);
+            renderQuote(0);
+            setInterval(() => {
+                renderQuote(1);
+            }, 90000);
+
+            // Load saved exam details
+            const savedTitle = localStorage.getItem('exam_title');
+            const savedRules = localStorage.getItem('exam_rules');
+            const savedSilent = localStorage.getItem('exam_silent');
+            if (savedTitle !== null) document.getElementById('input-exam-title').value = savedTitle;
+            if (savedRules !== null) document.getElementById('input-exam-rules').value = savedRules;
+            if (savedSilent !== null) document.getElementById('input-exam-silent').checked = (savedSilent === 'true');
         });
 
         function toggleLargeView() {
@@ -687,6 +1041,38 @@
         }
 
         applySystemTheme();
+
+        // Keyboard Shortcuts (Clicker Friendly)
+        window.addEventListener('keydown', (e) => {
+            const activeEl = document.activeElement;
+            if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
+                return; // Ignore if user is typing
+            }
+
+            if (e.code === 'Space') {
+                e.preventDefault();
+                const timerRunning = !document.getElementById('timer-running').classList.contains('hidden');
+                if (timerRunning) {
+                    togglePause();
+                }
+            } else if (e.code === 'KeyF') {
+                e.preventDefault();
+                toggleLargeView();
+            } else if (e.code === 'Escape') {
+                const timerRunning = !document.getElementById('timer-running').classList.contains('hidden');
+                if (timerRunning) {
+                    stopTimer();
+                }
+            } else if (e.code === 'KeyT') {
+                e.preventDefault();
+                const viewClock = document.getElementById('view-clock');
+                if (viewClock.classList.contains('hidden')) {
+                    showTab('clock');
+                } else {
+                    showTab('timer');
+                }
+            }
+        });
     </script>
 </body>
 
