@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0d0d0d">
     <title>macOS Flip Clock & Timer</title>
     <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
@@ -70,7 +71,7 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background: var(--bg-color);
             color: var(--text-main);
             height: 100vh;
@@ -523,6 +524,127 @@
 
 
 
+        /* Reusable Confirmation Modal */
+        #confirm-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            animation: modalFade 0.2s ease forwards;
+        }
+
+        .modal-card {
+            position: relative;
+            background: var(--flip-bg);
+            color: var(--text-main);
+            border: 1px solid var(--sep-color);
+            border-radius: 22px;
+            padding: 34px 32px 28px;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+            animation: modalPop 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .modal-icon {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(239, 68, 68, 0.12);
+            color: #ef4444;
+        }
+
+        .modal-icon.modal-icon-info {
+            background: rgba(59, 130, 246, 0.12);
+            color: #3b82f6;
+        }
+
+        .modal-card h3 {
+            margin: 0 0 8px;
+            font-size: 1.35rem;
+            font-weight: 700;
+        }
+
+        .modal-card p {
+            margin: 0 0 26px;
+            font-size: 0.95rem;
+            color: var(--text-dim);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 13px 20px;
+            border: none;
+            border-radius: 13px;
+            font-weight: 700;
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .modal-btn-secondary {
+            background: rgba(128, 128, 128, 0.15);
+            color: var(--text-main);
+        }
+
+        .modal-btn-secondary:hover {
+            background: rgba(128, 128, 128, 0.28);
+        }
+
+        .modal-btn-danger {
+            background: #ef4444;
+            color: #ffffff;
+            box-shadow: 0 6px 16px rgba(239, 68, 68, 0.35);
+        }
+
+        .modal-btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .modal-btn-primary {
+            background: #3b82f6;
+            color: #ffffff;
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.35);
+        }
+
+        .modal-btn-primary:hover {
+            background: #2563eb;
+        }
+
+        @keyframes modalFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.92) translateY(12px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
     </style>
 </head>
 
@@ -531,6 +653,20 @@
     <!-- Progress Bar -->
     <div id="progress-bar-container" class="hidden">
         <div id="progress-bar"></div>
+    </div>
+
+    <!-- Reusable Confirmation Modal -->
+    <div id="confirm-modal" class="hidden">
+        <div class="modal-backdrop" onclick="modalCancel()"></div>
+        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">
+            <div class="modal-icon" id="confirm-modal-icon"></div>
+            <h3 id="confirm-modal-title"></h3>
+            <p id="confirm-modal-message"></p>
+            <div class="modal-actions">
+                <button id="confirm-modal-cancel" onclick="modalCancel()" class="modal-btn modal-btn-secondary">Cancel</button>
+                <button id="confirm-modal-confirm" onclick="modalConfirm()" class="modal-btn modal-btn-danger">Confirm</button>
+            </div>
+        </div>
     </div>
 
     <div id="wake-status" class="status-pill opacity-0 transition-opacity">
@@ -585,11 +721,11 @@
                 <div class="flex flex-col items-center space-y-3 w-full">
                     <span class="text-[10px] tracking-widest uppercase font-bold text-gray-400">Set Countdown Duration</span>
                     <div class="flex items-center space-x-2 md:space-x-4">
-                        <input type="number" id="input-hr" class="timer-input" value="00">
+                        <input type="number" id="input-hr" class="timer-input" value="00" min="0" max="23" step="1">
                         <div class="text-gray-400 font-bold">:</div>
-                        <input type="number" id="input-min" class="timer-input" value="05">
+                        <input type="number" id="input-min" class="timer-input" value="05" min="0" max="59" step="1">
                         <div class="text-gray-400 font-bold">:</div>
-                        <input type="number" id="input-sec" class="timer-input" value="00">
+                        <input type="number" id="input-sec" class="timer-input" value="00" min="0" max="59" step="1">
                     </div>
                 </div>
 
@@ -681,14 +817,14 @@
                 <div class="flex space-x-4">
                     <button id="pause-btn" onclick="togglePause()"
                         class="bg-gray-500/20 text-current px-10 py-4 rounded-full text-xs tracking-widest uppercase transition-colors">Pause</button>
-                    <button onclick="stopTimer()"
+                    <button onclick="confirmStop()"
                         class="bg-red-500/10 text-red-500 px-10 py-4 rounded-full text-xs tracking-widest uppercase border border-red-500/20 transition-colors">Reset</button>
                 </div>
-                <div class="flex space-x-2 text-[10px] font-bold tracking-wider uppercase text-gray-500">
-                    <button onclick="adjustTime(-300)" class="bg-gray-500/10 hover:bg-gray-500/20 px-4 py-2 rounded-lg transition-colors">-5m</button>
-                    <button onclick="adjustTime(-60)" class="bg-gray-500/10 hover:bg-gray-500/20 px-4 py-2 rounded-lg transition-colors">-1m</button>
-                    <button onclick="adjustTime(60)" class="bg-blue-600/10 text-blue-500 hover:bg-blue-600/20 px-4 py-2 rounded-lg transition-colors">+1m</button>
-                    <button onclick="adjustTime(300)" class="bg-blue-600/10 text-blue-500 hover:bg-blue-600/20 px-4 py-2 rounded-lg transition-colors">+5m</button>
+                <div class="flex space-x-3 md:space-x-4 text-base md:text-xl font-bold tracking-wider uppercase text-gray-500">
+                    <button onclick="adjustTime(-300)" class="bg-gray-500/10 hover:bg-gray-500/20 px-6 py-4 md:px-8 md:py-5 rounded-xl transition-colors">-5m</button>
+                    <button onclick="adjustTime(-60)" class="bg-gray-500/10 hover:bg-gray-500/20 px-6 py-4 md:px-8 md:py-5 rounded-xl transition-colors">-1m</button>
+                    <button onclick="adjustTime(60)" class="bg-blue-600/10 text-blue-500 hover:bg-blue-600/20 px-6 py-4 md:px-8 md:py-5 rounded-xl transition-colors">+1m</button>
+                    <button onclick="adjustTime(300)" class="bg-blue-600/10 text-blue-500 hover:bg-blue-600/20 px-6 py-4 md:px-8 md:py-5 rounded-xl transition-colors">+5m</button>
                 </div>
             </div>
         </div>
@@ -714,7 +850,6 @@
         </div>
     </div>
 
-    <audio id="beep-sound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio>
 
     <script>
         let showSeconds = true;
@@ -752,14 +887,20 @@
             const unit = document.getElementById(elementId);
             if (!unit) return;
 
-            const topStatic = unit.querySelector('.plate-top .digit-text');
             const bottomStatic = unit.querySelector('.plate-bottom .digit-text');
+
+            // Guard against re-triggering the same flip. The bottom plate isn't
+            // committed until 300ms into the animation, so at sub-second poll
+            // rates we track the in-flight target synchronously via dataset
+            // instead of reading the (still-old) bottom plate.
+            const currentValue = unit.dataset.val !== undefined ? unit.dataset.val : bottomStatic.textContent;
+            if (currentValue === nextValue) return;
+            unit.dataset.val = nextValue;
+
+            const topStatic = unit.querySelector('.plate-top .digit-text');
             const flap = unit.querySelector('.flap');
             const flapFront = unit.querySelector('.flap-front .digit-text');
             const flapBack = unit.querySelector('.flap-back .digit-text');
-
-            const currentValue = bottomStatic.textContent;
-            if (currentValue === nextValue) return;
 
             topStatic.textContent = nextValue;
             flapFront.textContent = currentValue;
@@ -811,7 +952,136 @@
             refreshTimerUI();
         }
 
-        let timerInt, timeLeft = 0, isPaused = false, timerDuration = 0;
+        let timerInt, timeLeft = 0, isPaused = false, timerDuration = 0, endTime = 0;
+        let wakeLock = null, warned5 = false, warned1 = false;
+
+        // Self-contained beep via the Web Audio API — no external sound file,
+        // so the alarm still works with no network. The context is unlocked on
+        // the (user-gesture) Start click so later beeps are allowed to play.
+        let audioCtx = null;
+        function initAudio() {
+            try {
+                audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+            } catch (e) { /* Web Audio unavailable */ }
+        }
+        function playBeep(times = 1) {
+            if (!audioCtx) initAudio();
+            if (!audioCtx) return;
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            for (let i = 0; i < times; i++) {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                const start = audioCtx.currentTime + i * 0.28;
+                osc.type = 'sine';
+                osc.frequency.value = 880;
+                gain.gain.setValueAtTime(0.0001, start);
+                gain.gain.exponentialRampToValueAtTime(0.4, start + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.22);
+                osc.connect(gain).connect(audioCtx.destination);
+                osc.start(start);
+                osc.stop(start + 0.24);
+            }
+        }
+
+        // --- Screen Wake Lock: keep the display awake while a timer runs ---
+        function setWakeStatus(on) {
+            const pill = document.getElementById('wake-status');
+            if (pill) pill.style.opacity = on ? '1' : '0';
+        }
+        async function requestWakeLock() {
+            try {
+                if ('wakeLock' in navigator) {
+                    wakeLock = await navigator.wakeLock.request('screen');
+                    setWakeStatus(true);
+                    wakeLock.addEventListener('release', () => setWakeStatus(false));
+                }
+            } catch (e) {
+                setWakeStatus(false);
+            }
+        }
+        function releaseWakeLock() {
+            if (wakeLock) {
+                wakeLock.release().catch(() => { });
+                wakeLock = null;
+            }
+            setWakeStatus(false);
+        }
+        // Wake locks drop when the tab is hidden; re-acquire on return if still running.
+        document.addEventListener('visibilitychange', () => {
+            const running = !document.getElementById('timer-running').classList.contains('hidden');
+            if (document.visibilityState === 'visible' && running && !wakeLock) {
+                requestWakeLock();
+            }
+        });
+
+        // --- Persist a running timer so a reload/crash can resume it ---
+        function persistTimerState() {
+            if (timeLeft > 0) {
+                localStorage.setItem('timer_state', JSON.stringify({ endTime, timerDuration, isPaused, timeLeft }));
+            }
+        }
+        function clearTimerState() {
+            localStorage.removeItem('timer_state');
+        }
+        function maybeResumeTimer() {
+            let s;
+            try { s = JSON.parse(localStorage.getItem('timer_state')); } catch (e) { s = null; }
+            if (!s) return;
+            const remaining = s.isPaused ? s.timeLeft : Math.round((s.endTime - Date.now()) / 1000);
+            if (!remaining || remaining <= 0) { clearTimerState(); return; }
+            showConfirmModal({
+                title: 'Resume timer?',
+                message: `A timer was interrupted with ${formatTime(remaining)} remaining.`,
+                confirmLabel: 'Resume',
+                cancelLabel: 'Discard',
+                danger: false,
+                icon: 'clock',
+                onConfirm: () => doResumeTimer(s, remaining),
+                onCancel: clearTimerState
+            });
+        }
+        function doResumeTimer(s, remaining) {
+            showTab('timer');
+            timerDuration = s.timerDuration;
+            timeLeft = remaining;
+            isPaused = s.isPaused;
+            warned5 = remaining <= 300;
+            warned1 = remaining <= 60;
+            document.getElementById('timer-setup').classList.add('hidden');
+            document.getElementById('progress-bar-container').classList.remove('hidden');
+            document.getElementById('timer-digits').classList.remove('hidden');
+            document.getElementById('timer-running').classList.remove('hidden');
+            document.getElementById('pause-btn').textContent = isPaused ? 'Resume' : 'Pause';
+            initAudio();
+            requestWakeLock();
+            if (isPaused) {
+                refreshTimerUI();
+                updateProgressBar();
+                updateTitle();
+            } else {
+                runTimer();
+            }
+            updateQuoteVisibility();
+        }
+
+        // --- Formatting + tab-title countdown ---
+        function formatTime(t) {
+            const h = Math.floor(t / 3600), m = Math.floor((t % 3600) / 60), s = t % 60;
+            return (h > 0 ? h + ':' : '') + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+        }
+        function updateTitle() {
+            const running = !document.getElementById('timer-running').classList.contains('hidden');
+            document.title = running
+                ? `${isPaused ? '⏸' : '⏳'} ${formatTime(timeLeft)} — Timer`
+                : 'macOS Flip Clock & Timer';
+        }
+
+        // --- Interval warnings at 5 min and 1 min remaining ---
+        function checkWarnings() {
+            if (!warned5 && timeLeft <= 300 && timeLeft > 60) { warned5 = true; playBeep(1); }
+            if (!warned1 && timeLeft <= 60 && timeLeft > 0) { warned1 = true; playBeep(2); }
+        }
 
         function setPreset(h, m, s) {
             document.getElementById('input-hr').value = String(h).padStart(2, '0');
@@ -825,15 +1095,22 @@
 
             if (timeLeft + seconds <= 0) {
                 timeLeft = 0;
+                endTime = Date.now();
                 clearInterval(timerInt);
                 handleTimerEnd();
             } else {
                 timeLeft += seconds;
+                endTime += seconds * 1000;
                 if (seconds > 0) {
                     timerDuration += seconds;
                 }
+                // Re-arm warnings if time was added back above a threshold.
+                if (timeLeft > 300) warned5 = false;
+                if (timeLeft > 60) warned1 = false;
                 refreshTimerUI();
                 updateProgressBar();
+                updateTitle();
+                persistTimerState();
             }
         }
 
@@ -846,67 +1123,6 @@
             "You cannot leave in the first 30 minutes and last 5 minutes"
         ];
 
-        let activeRules = [];
-        try {
-            const stored = localStorage.getItem('timer_rules');
-            if (stored) {
-                activeRules = JSON.parse(stored);
-            } else {
-                activeRules = [...defaultRules];
-            }
-        } catch (e) {
-            activeRules = [...defaultRules];
-        }
-
-        function saveRules() {
-            const container = document.getElementById('rules-input-container');
-            if (!container) return;
-            const inputs = container.querySelectorAll('.rule-item-input');
-            activeRules = Array.from(inputs).map(input => input.value.trim()).filter(val => val !== '');
-            localStorage.setItem('timer_rules', JSON.stringify(activeRules));
-        }
-
-        function renderRulesEditor() {
-            const container = document.getElementById('rules-input-container');
-            if (!container) return;
-            container.innerHTML = '';
-            activeRules.forEach((rule, idx) => {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'flex items-center space-x-2 w-full group';
-                itemDiv.innerHTML = `
-                    <span class="text-xs font-bold text-gray-500 min-w-[14px]">${idx + 1}.</span>
-                    <input type="text" class="rule-item-input flex-1" placeholder="Rule instruction..." value="${rule.replace(/"/g, '&quot;')}" oninput="saveRules()">
-                    <button type="button" onclick="deleteRuleInput(${idx})" class="text-red-500 hover:text-red-400 p-1 rounded hover:bg-red-500/10 transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 cursor-pointer" title="Delete Rule">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="3 6 5 6 21 6"></polyline>
-                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                        </svg>
-                    </button>
-                `;
-                container.appendChild(itemDiv);
-            });
-        }
-
-        function addNewRuleInput() {
-            saveRules();
-            activeRules.push('');
-            renderRulesEditor();
-            const container = document.getElementById('rules-input-container');
-            if (container) {
-                const inputs = container.querySelectorAll('.rule-item-input');
-                if (inputs.length > 0) {
-                    inputs[inputs.length - 1].focus();
-                }
-            }
-        }
-
-        function deleteRuleInput(idx) {
-            saveRules();
-            activeRules.splice(idx, 1);
-            renderRulesEditor();
-            saveRules();
-        }
-
         const defaultPostRules = [
             "Stop writing immediately and close your exam paper",
             "Remain seated and quiet until all exams are collected",
@@ -914,92 +1130,109 @@
             "Exit the room quietly once dismissed by the proctor"
         ];
 
-        let activePostRules = [];
-        try {
-            const storedPost = localStorage.getItem('timer_post_rules');
-            if (storedPost) {
-                activePostRules = JSON.parse(storedPost);
-                // Migrate: automatically replace the old default ID verification instruction with the formula sheet instruction
-                const oldIdRule = "Have your ID ready on your desk for verification";
-                const idx = activePostRules.indexOf(oldIdRule);
-                if (idx !== -1) {
-                    activePostRules[idx] = "You need to hand in your formula sheet with your exam";
-                    localStorage.setItem('timer_post_rules', JSON.stringify(activePostRules));
-                }
-            } else {
-                activePostRules = [...defaultPostRules];
+        // A single rule-editor implementation, instantiated once for the
+        // pre-start rules and once for the post-exam rules.
+        function createRuleEditor(storageKey, containerId, defaults) {
+            const editor = { rules: [], storageKey, containerId };
+            try {
+                const stored = localStorage.getItem(storageKey);
+                editor.rules = stored ? JSON.parse(stored) : [...defaults];
+            } catch (e) {
+                editor.rules = [...defaults];
             }
-        } catch (e) {
-            activePostRules = [...defaultPostRules];
+            return editor;
         }
 
-        function savePostRules() {
-            const container = document.getElementById('post-rules-input-container');
+        function saveRuleEditor(editor) {
+            const container = document.getElementById(editor.containerId);
             if (!container) return;
             const inputs = container.querySelectorAll('.rule-item-input');
-            activePostRules = Array.from(inputs).map(input => input.value.trim()).filter(val => val !== '');
-            localStorage.setItem('timer_post_rules', JSON.stringify(activePostRules));
+            editor.rules = Array.from(inputs).map(i => i.value.trim()).filter(v => v !== '');
+            localStorage.setItem(editor.storageKey, JSON.stringify(editor.rules));
         }
 
-        function renderPostRulesEditor() {
-            const container = document.getElementById('post-rules-input-container');
+        function renderRuleEditor(editor) {
+            const container = document.getElementById(editor.containerId);
             if (!container) return;
             container.innerHTML = '';
-            activePostRules.forEach((rule, idx) => {
+            editor.rules.forEach((rule, idx) => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'flex items-center space-x-2 w-full group';
                 itemDiv.innerHTML = `
                     <span class="text-xs font-bold text-gray-500 min-w-[14px]">${idx + 1}.</span>
-                    <input type="text" class="rule-item-input flex-1" placeholder="Rule instruction..." value="${rule.replace(/"/g, '&quot;')}" oninput="savePostRules()">
-                    <button type="button" onclick="deletePostRuleInput(${idx})" class="text-red-500 hover:text-red-400 p-1 rounded hover:bg-red-500/10 transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 cursor-pointer" title="Delete Rule">
+                    <input type="text" class="rule-item-input flex-1" placeholder="Rule instruction..." value="${rule.replace(/"/g, '&quot;')}">
+                    <button type="button" class="rule-delete-btn text-red-500 hover:text-red-400 p-1 rounded hover:bg-red-500/10 transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 cursor-pointer" title="Delete Rule">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="3 6 5 6 21 6"></polyline>
                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                         </svg>
                     </button>
                 `;
+                itemDiv.querySelector('.rule-item-input').addEventListener('input', () => saveRuleEditor(editor));
+                itemDiv.querySelector('.rule-delete-btn').addEventListener('click', () => deleteRuleFromEditor(editor, idx));
                 container.appendChild(itemDiv);
             });
         }
 
-        function addNewPostRuleInput() {
-            savePostRules();
-            activePostRules.push('');
-            renderPostRulesEditor();
-            const container = document.getElementById('post-rules-input-container');
+        function addRuleToEditor(editor) {
+            saveRuleEditor(editor);
+            editor.rules.push('');
+            renderRuleEditor(editor);
+            const container = document.getElementById(editor.containerId);
             if (container) {
                 const inputs = container.querySelectorAll('.rule-item-input');
-                if (inputs.length > 0) {
-                    inputs[inputs.length - 1].focus();
-                }
+                if (inputs.length > 0) inputs[inputs.length - 1].focus();
             }
         }
 
-        function deletePostRuleInput(idx) {
-            savePostRules();
-            activePostRules.splice(idx, 1);
-            renderPostRulesEditor();
-            savePostRules();
+        function deleteRuleFromEditor(editor, idx) {
+            saveRuleEditor(editor);
+            editor.rules.splice(idx, 1);
+            renderRuleEditor(editor);
+            saveRuleEditor(editor);
+        }
+
+        const preRules = createRuleEditor('timer_rules', 'rules-input-container', defaultRules);
+        const postRules = createRuleEditor('timer_post_rules', 'post-rules-input-container', defaultPostRules);
+
+        // Migrate: replace the old default ID-verification instruction with the formula-sheet one.
+        const oldIdRuleIdx = postRules.rules.indexOf("Have your ID ready on your desk for verification");
+        if (oldIdRuleIdx !== -1) {
+            postRules.rules[oldIdRuleIdx] = "You need to hand in your formula sheet with your exam";
+            localStorage.setItem(postRules.storageKey, JSON.stringify(postRules.rules));
+        }
+
+        // Thin wrappers so the inline HTML onclick handlers keep working.
+        function addNewRuleInput() { addRuleToEditor(preRules); }
+        function addNewPostRuleInput() { addRuleToEditor(postRules); }
+
+        function clampField(id, max) {
+            const el = document.getElementById(id);
+            let val = parseInt(el.value, 10);
+            if (isNaN(val) || val < 0) val = 0;
+            if (val > max) val = max;
+            el.value = String(val).padStart(2, '0');
+            return val;
         }
 
         function reviewRulesOrStart() {
-            const h = parseInt(document.getElementById('input-hr').value) || 0;
-            const m = parseInt(document.getElementById('input-min').value) || 0;
-            const s = parseInt(document.getElementById('input-sec').value) || 0;
+            const h = clampField('input-hr', 23);
+            const m = clampField('input-min', 59);
+            const s = clampField('input-sec', 59);
             timeLeft = (h * 3600) + (m * 60) + s;
             if (timeLeft <= 0) return;
 
             timerDuration = timeLeft;
-            saveRules();
+            saveRuleEditor(preRules);
 
-            if (activeRules.length > 0) {
+            if (preRules.rules.length > 0) {
                 const list = document.getElementById('rules-display-list');
                 if (list) {
                     list.innerHTML = '';
-                    activeRules.forEach((rule, idx) => {
+                    preRules.rules.forEach((rule, idx) => {
                         const li = document.createElement('li');
                         li.textContent = rule;
-                        li.className = 'rules-list-item whitespace-nowrap';
+                        li.className = 'rules-list-item';
                         li.style.animationDelay = `${idx * 100}ms`;
                         list.appendChild(li);
                     });
@@ -1007,6 +1240,7 @@
 
                 document.getElementById('timer-setup').classList.add('hidden');
                 document.getElementById('view-rules').classList.remove('hidden');
+                updateQuoteVisibility();
             } else {
                 beginCountdown();
             }
@@ -1023,60 +1257,82 @@
             document.getElementById('timer-digits').classList.remove('hidden');
             document.getElementById('timer-running').classList.remove('hidden');
             isPaused = false;
+            // Suppress warnings that are already past for the chosen duration.
+            warned5 = timeLeft <= 300;
+            warned1 = timeLeft <= 60;
+            initAudio();
+            requestWakeLock();
             runTimer();
+            persistTimerState();
+            updateQuoteVisibility();
         }
 
         function showTimerSetup() {
             const viewRules = document.getElementById('view-rules');
             if (viewRules) viewRules.classList.add('hidden');
             document.getElementById('timer-setup').classList.remove('hidden');
+            updateQuoteVisibility();
         }
 
         function updateProgressBar() {
             const percent = timerDuration > 0 ? (timeLeft / timerDuration) * 100 : 0;
-            document.getElementById('progress-bar').style.width = `${percent}%`;
+            const bar = document.getElementById('progress-bar');
+            bar.style.width = `${percent}%`;
+            // Warn visually as time runs low: blue -> amber (<=5m) -> red (<=1m).
+            bar.style.backgroundColor = timeLeft <= 60 ? '#ef4444' : (timeLeft <= 300 ? '#f59e0b' : '#3b82f6');
         }
 
         function runTimer() {
             clearInterval(timerInt);
+            // Anchor to a wall-clock end time so the countdown stays accurate
+            // even when the tab is backgrounded and setInterval is throttled.
+            endTime = Date.now() + timeLeft * 1000;
             timerInt = setInterval(() => {
                 if (!isPaused) {
-                    timeLeft--;
+                    timeLeft = Math.max(0, Math.round((endTime - Date.now()) / 1000));
                     refreshTimerUI();
                     updateProgressBar();
+                    updateTitle();
+                    checkWarnings();
+                    persistTimerState();
                     if (timeLeft <= 0) {
                         clearInterval(timerInt);
                         handleTimerEnd();
                     }
                 }
-            }, 1000);
+            }, 250);
             refreshTimerUI();
             updateProgressBar();
+            updateTitle();
         }
 
         function handleTimerEnd() {
-            document.getElementById('beep-sound').play().catch(() => { });
+            playBeep(3);
 
             // Clear countdown interval
             clearInterval(timerInt);
             timeLeft = 0;
             timerDuration = 0;
+            releaseWakeLock();
+            clearTimerState();
 
             // Hide clock digits, running overlay, progress bar
             document.getElementById('timer-digits').classList.add('hidden');
             document.getElementById('timer-running').classList.add('hidden');
             document.getElementById('progress-bar-container').classList.add('hidden');
+            updateTitle();
+            updateQuoteVisibility();
 
-            savePostRules();
-            if (activePostRules.length > 0) {
+            saveRuleEditor(postRules);
+            if (postRules.rules.length > 0) {
                 // Render and show post exam rules
                 const list = document.getElementById('post-rules-display-list');
                 if (list) {
                     list.innerHTML = '';
-                    activePostRules.forEach((rule, idx) => {
+                    postRules.rules.forEach((rule, idx) => {
                         const li = document.createElement('li');
                         li.textContent = rule;
-                        li.className = 'rules-list-item whitespace-nowrap';
+                        li.className = 'rules-list-item';
                         li.style.animationDelay = `${idx * 100}ms`;
                         list.appendChild(li);
                     });
@@ -1109,7 +1365,9 @@
             clearInterval(timerInt);
             timeLeft = 0;
             timerDuration = 0;
-            
+            releaseWakeLock();
+            clearTimerState();
+
             // Clean exam displays & states
             document.getElementById('timer-digits').classList.add('hidden');
             const viewRules = document.getElementById('view-rules');
@@ -1124,8 +1382,85 @@
             timerIds.forEach(id => {
                 flipTo(id, '0');
             });
+            updateTitle();
+            updateQuoteVisibility();
         }
-        function togglePause() { isPaused = !isPaused; document.getElementById('pause-btn').textContent = isPaused ? 'Resume' : 'Pause'; }
+        // --- Reusable confirmation modal ---
+        const MODAL_ICONS = {
+            warning: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>',
+            clock: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>'
+        };
+        let modalConfirmCb = null, modalCancelCb = null;
+
+        function showConfirmModal(opts) {
+            const danger = opts.danger !== false; // default to the red/danger style
+            document.getElementById('confirm-modal-title').textContent = opts.title || 'Are you sure?';
+            document.getElementById('confirm-modal-message').textContent = opts.message || '';
+
+            const confirmBtn = document.getElementById('confirm-modal-confirm');
+            confirmBtn.textContent = opts.confirmLabel || 'Confirm';
+            confirmBtn.className = 'modal-btn ' + (danger ? 'modal-btn-danger' : 'modal-btn-primary');
+
+            document.getElementById('confirm-modal-cancel').textContent = opts.cancelLabel || 'Cancel';
+
+            const iconEl = document.getElementById('confirm-modal-icon');
+            iconEl.className = 'modal-icon' + (danger ? '' : ' modal-icon-info');
+            iconEl.innerHTML = MODAL_ICONS[opts.icon] || (danger ? MODAL_ICONS.warning : MODAL_ICONS.clock);
+
+            modalConfirmCb = opts.onConfirm || null;
+            modalCancelCb = opts.onCancel || null;
+            document.getElementById('confirm-modal').classList.remove('hidden');
+        }
+        function hideConfirmModal() {
+            document.getElementById('confirm-modal').classList.add('hidden');
+        }
+        function modalConfirm() {
+            const cb = modalConfirmCb;
+            modalConfirmCb = null; modalCancelCb = null;
+            hideConfirmModal();
+            if (cb) cb();
+        }
+        function modalCancel() {
+            const cb = modalCancelCb;
+            modalConfirmCb = null; modalCancelCb = null;
+            hideConfirmModal();
+            if (cb) cb();
+        }
+        function isModalOpen() {
+            return !document.getElementById('confirm-modal').classList.contains('hidden');
+        }
+
+        // Confirm before discarding a running timer (guards accidental Reset/Escape).
+        function confirmStop() {
+            const running = !document.getElementById('timer-running').classList.contains('hidden');
+            if (running && timeLeft > 0) {
+                showConfirmModal({
+                    title: 'Reset timer?',
+                    message: 'The current countdown will be lost.',
+                    confirmLabel: 'Reset',
+                    cancelLabel: 'Cancel',
+                    danger: true,
+                    icon: 'warning',
+                    onConfirm: stopTimer
+                });
+            } else {
+                stopTimer();
+            }
+        }
+
+        function togglePause() {
+            isPaused = !isPaused;
+            if (isPaused) {
+                // Freeze remaining time at the moment of pausing.
+                timeLeft = Math.max(0, Math.round((endTime - Date.now()) / 1000));
+            } else {
+                // Re-anchor the end time so the paused duration isn't counted.
+                endTime = Date.now() + timeLeft * 1000;
+            }
+            document.getElementById('pause-btn').textContent = isPaused ? 'Resume' : 'Pause';
+            persistTimerState();
+            updateTitle();
+        }
 
         function showTab(tab) {
             document.getElementById('view-clock').classList.toggle('hidden', tab !== 'clock');
@@ -1136,15 +1471,17 @@
             // Persist tab selection
             localStorage.setItem('active_tab', tab);
 
-            // Toggle quotes visibility (hide on timer pages entirely)
+            updateQuoteVisibility();
+        }
+
+        // Quotes show on the clock always, and on the timer ONLY while it's
+        // running — not on the setup, rules, or post-exam screens.
+        function updateQuoteVisibility() {
             const quoteWrapper = document.getElementById('quote-wrapper');
-            if (quoteWrapper) {
-                if (tab === 'clock') {
-                    quoteWrapper.classList.remove('hidden');
-                } else {
-                    quoteWrapper.classList.add('hidden');
-                }
-            }
+            if (!quoteWrapper) return;
+            const onClock = !document.getElementById('view-clock').classList.contains('hidden');
+            const timerRunning = !document.getElementById('timer-running').classList.contains('hidden');
+            quoteWrapper.classList.toggle('hidden', !(onClock || timerRunning));
         }
 
         const engineeringQuotes = [
@@ -1219,12 +1556,15 @@
             setInterval(() => {
                 renderQuote(1);
             }, 90000);
-            renderRulesEditor();
-            renderPostRulesEditor();
+            renderRuleEditor(preRules);
+            renderRuleEditor(postRules);
 
             // Restore persistent tab selection
             const savedTab = localStorage.getItem('active_tab') || 'clock';
             showTab(savedTab);
+
+            // Offer to resume a timer that was interrupted by a reload/crash.
+            maybeResumeTimer();
         });
 
         function toggleLargeView() {
@@ -1247,28 +1587,46 @@
 
         function updateThemeIcon() {
             const icon = document.getElementById('theme-icon');
-            if (document.body.classList.contains('light-theme')) {
+            const isLight = document.body.classList.contains('light-theme');
+            if (isLight) {
                 icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
             } else {
                 icon.innerHTML = '<path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"></path>';
             }
+            // Keep the mobile browser chrome in sync with the active theme.
+            const meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute('content', isLight ? '#f5f5f7' : '#0d0d0d');
         }
 
         function toggleTheme() {
-            document.body.classList.toggle('light-theme');
+            const isLight = document.body.classList.toggle('light-theme');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
             updateThemeIcon();
         }
 
-        function applySystemTheme() {
-            const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-            document.body.classList.toggle('light-theme', prefersLight);
+        function applyInitialTheme() {
+            // Honor a saved manual choice; otherwise fall back to the system preference.
+            const saved = localStorage.getItem('theme');
+            const isLight = saved
+                ? saved === 'light'
+                : window.matchMedia('(prefers-color-scheme: light)').matches;
+            document.body.classList.toggle('light-theme', isLight);
             updateThemeIcon();
         }
 
-        applySystemTheme();
+        applyInitialTheme();
 
         // Keyboard Shortcuts (Clicker Friendly)
         window.addEventListener('keydown', (e) => {
+            // When a confirmation modal is open, Escape cancels it (nothing else fires).
+            if (isModalOpen()) {
+                if (e.code === 'Escape') {
+                    e.preventDefault();
+                    modalCancel();
+                }
+                return;
+            }
+
             const activeEl = document.activeElement;
             if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
                 return; // Ignore if user is typing
@@ -1286,7 +1644,7 @@
             } else if (e.code === 'Escape') {
                 const timerRunning = !document.getElementById('timer-running').classList.contains('hidden');
                 if (timerRunning) {
-                    stopTimer();
+                    confirmStop();
                 }
             } else if (e.code === 'KeyT') {
                 e.preventDefault();

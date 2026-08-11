@@ -15,9 +15,11 @@ A sleek, minimalist, web-based flip clock and countdown timer inspired by the cl
 * **3D Flip Animations:** Hardware-accelerated CSS animations using `transform-style: preserve-3d` for a smooth, realistic mechanical flip effect.
 * **Intelligent Theming:** Automatically detects your system's light/dark mode preference, with a manual toggle for quick overriding.
 * **Immersive View:** A built-in fullscreen/large-view toggle for distraction-free focus.
-* **Daily Wisdom:** Automatically fetches and displays random, inspiring quotes via the Advice Slip API.
+* **Daily Wisdom:** Cycles through a curated, built-in set of engineering quotes — no network required.
+* **Exam Mode:** Optional pre-start and post-exam instruction screens with editable, persisted rule lists.
+* **Stays Accurate & Awake:** Timestamp-based countdown that resists tab throttling, a screen Wake Lock while running, and resume-after-reload so an accidental refresh won't lose the timer.
 * **Precision Control:** Option to show or hide the seconds panel to reduce visual clutter.
-* **Audio & Visual Alerts:** Bouncing animations, pulsing text, and a crisp beep sound when your timer finishes.
+* **Audio & Visual Alerts:** Progress bar that shifts amber then red, warning beeps at 5 and 1 minutes, and a Web Audio alarm when your timer finishes — all generated locally.
 
 ## 🚀 Getting Started
 
@@ -25,15 +27,13 @@ Because this project uses vanilla HTML, CSS, and JavaScript with Tailwind pulled
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/yourusername/macos-flip-clock.git](https://github.com/yourusername/macos-flip-clock.git)
-
-```
+   git clone https://github.com/drarahimi/clock-timer.git
+   ```
 
 2. **Navigate to the directory:**
-```bash
-cd macos-flip-clock
-
-```
+   ```bash
+   cd clock-timer
+   ```
 
 
 3. **Run the app:**
@@ -44,7 +44,7 @@ Simply double-click the `index.html` file to open it in your default web browser
 
 * **Structure:** HTML5 semantic layout.
 * **Styling:** Tailwind CSS (via CDN) for rapid layout and UI components, combined with custom CSS for complex 3D perspective animations.
-* **Logic:** Vanilla JavaScript handles the time calculations, DOM manipulation, interval management, and asynchronous API calls.
+* **Logic:** Vanilla JavaScript handles the time calculations, DOM manipulation, interval management, timestamp-based countdown, Wake Lock, and Web Audio alerts.
 * **Typography:** The highly legible [Inter font](https://www.google.com/search?q=https://fonts.google.com/specimen/Inter) serves as the primary typeface, utilizing `font-variant-numeric: tabular-nums` to ensure the flipping digits remain perfectly aligned.
 
 ## 🎨 How the Flip Animation Works
