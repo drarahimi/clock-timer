@@ -48,6 +48,7 @@
                 --unit-w: 140px;
                 --font-sz: 160px;
             }
+
             body.hide-seconds {
                 --unit-h: 260px;
                 --unit-w: 180px;
@@ -310,9 +311,11 @@
             #quote-container {
                 min-height: 160px;
             }
+
             #quote-text {
                 font-size: 2.25rem;
             }
+
             #quote-author {
                 font-size: 1rem;
             }
@@ -376,9 +379,11 @@
             background: rgba(255, 255, 255, 0.05);
             z-index: 250;
         }
+
         .light-theme #progress-bar-container {
             background: rgba(0, 0, 0, 0.05);
         }
+
         #progress-bar {
             height: 100%;
             width: 100%;
@@ -391,16 +396,20 @@
             overflow-y: auto;
             scrollbar-width: thin;
         }
+
         .rule-input-container::-webkit-scrollbar {
             width: 4px;
         }
+
         .rule-input-container::-webkit-scrollbar-track {
             background: transparent;
         }
+
         .rule-input-container::-webkit-scrollbar-thumb {
             background: var(--sep-color);
             border-radius: 4px;
         }
+
         .rule-item-input {
             background: var(--flip-bg);
             border: 2px solid var(--sep-color);
@@ -412,23 +421,46 @@
             font-weight: 500;
             transition: all 0.3s ease;
         }
+
         .rule-item-input:focus {
             border-color: #3b82f6;
         }
 
+        /* Rules presentation screens break out of #main-panel's max-width so
+           longer rules fit on one line on wide displays. */
+        .rules-screen {
+            width: min(96vw, 1500px);
+        }
+
         /* Pre-Exam Rules Animations */
         @keyframes fadeInPage {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         .animate-fade-in-page {
             animation: fadeInPage 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         @keyframes slideInRule {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
+
         .rules-list-item {
             opacity: 0;
             animation: slideInRule 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -439,17 +471,20 @@
             0% {
                 transform: translate(0px, 0px) rotate(0deg);
             }
+
             33% {
                 transform: translate(30px, -50px) rotate(120deg);
             }
+
             66% {
                 transform: translate(-20px, 20px) rotate(240deg);
             }
+
             100% {
                 transform: translate(0px, 0px) rotate(360deg);
             }
         }
-        
+
         .developer-bg {
             position: absolute;
             inset: 0;
@@ -461,7 +496,7 @@
             transition: opacity 0.5s ease;
             pointer-events: none;
         }
-        
+
         .light-theme .developer-bg {
             opacity: 0.22;
         }
@@ -473,7 +508,7 @@
             border-radius: 50%;
             mix-blend-mode: multiply;
         }
-        
+
         .light-theme .blob {
             mix-blend-mode: normal;
         }
@@ -491,7 +526,7 @@
             background: radial-gradient(circle, #a855f7 0%, rgba(168, 85, 247, 0) 70%);
             animation: rotateBlob 25s infinite alternate-reverse ease-in-out;
         }
-        
+
         .blob-3 {
             top: 40%;
             left: 30%;
@@ -499,6 +534,7 @@
             animation: rotateBlob 22s infinite alternate ease-in-out;
             animation-delay: -5s;
         }
+
         .hidden {
             display: none !important;
         }
@@ -519,6 +555,186 @@
         .control-btn.active {
             color: #3b82f6;
             background: rgba(59, 130, 246, 0.1);
+        }
+
+        /* Simple / Exam mode segmented toggle */
+        .mode-toggle {
+            display: inline-flex;
+            background: var(--panel-bg);
+            border: 1px solid var(--sep-color);
+            border-radius: 14px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .mode-btn {
+            padding: 9px 26px;
+            border: none;
+            background: transparent;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .mode-btn:hover {
+            color: var(--text-main);
+        }
+
+        .mode-btn.active {
+            background: #3b82f6;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .mode-desc {
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            text-align: center;
+            max-width: 300px;
+            line-height: 1.4;
+            transition: opacity 0.25s ease;
+        }
+
+        /* Collapsible rule sections (Exam mode) */
+        .rules-section {
+            width: 100%;
+        }
+
+        .rules-section-header {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px;
+            background: var(--flip-bg);
+            border: 1px solid var(--sep-color);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+        }
+
+        .rules-section-header:hover {
+            border-color: #3b82f6;
+        }
+
+        .rules-section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+        }
+
+        .rules-count {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            letter-spacing: 0;
+        }
+
+        .rules-chevron {
+            color: var(--text-dim);
+            transition: transform 0.25s ease;
+        }
+
+        .rules-section-header.open .rules-chevron {
+            transform: rotate(180deg);
+        }
+
+        .rules-section-body {
+            padding-top: 12px;
+        }
+
+        .policy-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #3b82f6;
+            text-decoration: none;
+            text-align: center;
+            transition: color 0.2s ease;
+        }
+
+        .policy-link:hover {
+            color: #2563eb;
+            text-decoration: underline;
+        }
+
+        /* Setup body layout: single stacked column by default; on desktop in
+           Exam mode it becomes a 3-column grid (timer / pre-start / post-exam)
+           with both rule lists fully expanded so everything is visible at once. */
+        #setup-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            width: 100%;
+            align-items: center;
+        }
+
+        /* Hide exam-only pieces (rule columns, policy link, reset) in Simple mode. */
+        #timer-setup:not(.exam-mode) .exam-section {
+            display: none !important;
+        }
+
+        @media (min-width: 1024px) {
+            #timer-setup.exam-mode {
+                max-width: 72rem;
+            }
+
+            #timer-setup.exam-mode #setup-grid {
+                display: grid;
+                /* Narrow timer column; give the pre/post rule columns extra
+                   width so more of each rule fits on one line. */
+                grid-template-columns: 0.72fr 1.14fr 1.14fr;
+                gap: 22px;
+                align-items: start;
+            }
+
+            /* Fit the duration inputs into the (narrower) timer column. */
+            #timer-setup.exam-mode .timer-input {
+                width: 70px;
+                font-size: 1.7rem;
+                padding: 10px 0;
+            }
+
+            #timer-setup.exam-mode #duration-row>*+* {
+                margin-left: 6px;
+            }
+
+            /* Rule lists are always open and never scroll internally on desktop. */
+            #timer-setup.exam-mode .rules-section-body {
+                display: flex !important;
+            }
+
+            #timer-setup.exam-mode .rules-section-header {
+                pointer-events: none;
+                cursor: default;
+            }
+
+            #timer-setup.exam-mode .rules-chevron {
+                display: none;
+            }
+
+            #timer-setup.exam-mode .rule-input-container {
+                max-height: none;
+                overflow: visible;
+            }
+
+            #timer-setup.exam-mode #setup-footer {
+                max-width: 460px;
+            }
         }
 
 
@@ -636,15 +852,26 @@
         }
 
         @keyframes modalFade {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         @keyframes modalPop {
-            from { opacity: 0; transform: scale(0.92) translateY(12px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
+            from {
+                opacity: 0;
+                transform: scale(0.92) translateY(12px);
+            }
 
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
     </style>
 </head>
 
@@ -663,8 +890,10 @@
             <h3 id="confirm-modal-title"></h3>
             <p id="confirm-modal-message"></p>
             <div class="modal-actions">
-                <button id="confirm-modal-cancel" onclick="modalCancel()" class="modal-btn modal-btn-secondary">Cancel</button>
-                <button id="confirm-modal-confirm" onclick="modalConfirm()" class="modal-btn modal-btn-danger">Confirm</button>
+                <button id="confirm-modal-cancel" onclick="modalCancel()"
+                    class="modal-btn modal-btn-secondary">Cancel</button>
+                <button id="confirm-modal-confirm" onclick="modalConfirm()"
+                    class="modal-btn modal-btn-danger">Confirm</button>
             </div>
         </div>
     </div>
@@ -713,104 +942,196 @@
             <div id="date-display" class="uppercase"></div>
         </div>
 
-        <div id="view-timer" class="hidden flex flex-col items-center">
+        <div id="view-timer" class="hidden w-full flex flex-col items-center">
             <div class="flex items-center mb-12 hidden" id="timer-digits"></div>
 
-            <div id="timer-setup" class="flex flex-col items-center space-y-6 w-full max-w-md p-6 rounded-2xl bg-[var(--panel-bg)] border border-[var(--sep-color)]">
-                <!-- Time Input Section -->
-                <div class="flex flex-col items-center space-y-3 w-full">
-                    <span class="text-[10px] tracking-widest uppercase font-bold text-gray-400">Set Countdown Duration</span>
-                    <div class="flex items-center space-x-2 md:space-x-4">
-                        <input type="number" id="input-hr" class="timer-input" value="00" min="0" max="23" step="1">
-                        <div class="text-gray-400 font-bold">:</div>
-                        <input type="number" id="input-min" class="timer-input" value="05" min="0" max="59" step="1">
-                        <div class="text-gray-400 font-bold">:</div>
-                        <input type="number" id="input-sec" class="timer-input" value="00" min="0" max="59" step="1">
+            <div id="timer-setup"
+                class="flex flex-col items-center space-y-6 w-full max-w-md p-6 rounded-2xl bg-[var(--panel-bg)] border border-[var(--sep-color)]">
+                <!-- Mode Toggle: Simple vs. Exam -->
+                <div class="flex flex-col items-center space-y-3">
+                    <div class="mode-toggle" role="tablist" aria-label="Timer mode">
+                        <button type="button" id="mode-simple" role="tab" onclick="setTimerMode('simple')"
+                            class="mode-btn active">Simple</button>
+                        <button type="button" id="mode-exam" role="tab" onclick="setTimerMode('exam')"
+                            class="mode-btn">Exam</button>
+                    </div>
+                    <p id="mode-desc" class="mode-desc">A quick countdown — pick a duration and go.</p>
+                </div>
+
+                <!-- Setup body: stacked on mobile, 3-column grid on desktop in Exam mode -->
+                <div id="setup-grid">
+
+                    <!-- Column 1: Timer -->
+                    <div id="col-timer" class="flex flex-col items-center space-y-6 w-full">
+                        <!-- Time Input Section -->
+                        <div class="flex flex-col items-center space-y-3 w-full">
+                            <span class="text-[10px] tracking-widest uppercase font-bold text-gray-400">Set Countdown
+                                Duration</span>
+                            <div id="duration-row" class="flex items-center justify-center space-x-2 md:space-x-4">
+                                <input type="number" id="input-hr" class="timer-input" value="00" min="0" max="23"
+                                    step="1">
+                                <div class="text-gray-400 font-bold">:</div>
+                                <input type="number" id="input-min" class="timer-input" value="05" min="0" max="59"
+                                    step="1">
+                                <div class="text-gray-400 font-bold">:</div>
+                                <input type="number" id="input-sec" class="timer-input" value="00" min="0" max="59"
+                                    step="1">
+                            </div>
+                        </div>
+
+                        <!-- Presets Section -->
+                        <div
+                            class="flex flex-wrap justify-center gap-2 w-full text-[10px] font-bold tracking-wider uppercase text-gray-500">
+                            <button onclick="setPreset(0, 5, 0)"
+                                class="px-2.5 py-1 rounded-lg border border-gray-700/30 hover:bg-gray-500/10 hover:text-current transition-colors">5m</button>
+                            <button onclick="setPreset(0, 10, 0)"
+                                class="px-2.5 py-1 rounded-lg border border-gray-700/30 hover:bg-gray-500/10 hover:text-current transition-colors">10m</button>
+                            <button onclick="setPreset(0, 15, 0)"
+                                class="px-2.5 py-1 rounded-lg border border-gray-700/30 hover:bg-gray-500/10 hover:text-current transition-colors">15m</button>
+                            <button onclick="setPreset(0, 30, 0)"
+                                class="px-2.5 py-1 rounded-lg border border-gray-700/30 hover:bg-gray-500/10 hover:text-current transition-colors">30m</button>
+                            <button onclick="setPreset(1, 0, 0)"
+                                class="px-2.5 py-1 rounded-lg border border-gray-700/30 hover:bg-gray-500/10 hover:text-current transition-colors">1h</button>
+                            <button onclick="setPreset(2, 0, 0)"
+                                class="px-2.5 py-1 rounded-lg border border-gray-700/30 hover:bg-gray-500/10 hover:text-current transition-colors">2h</button>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Pre-Start Rules -->
+                    <div class="rules-section exam-section">
+                        <button type="button" id="pre-rules-header" onclick="toggleRulesSection('pre')"
+                            class="rules-section-header" aria-expanded="false" aria-controls="pre-rules-body">
+                            <span class="rules-section-title">Pre-Start Rules <span id="pre-rules-count"
+                                    class="rules-count">0</span></span>
+                            <svg class="rules-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        <div id="pre-rules-body" class="rules-section-body hidden flex flex-col items-center space-y-3">
+                            <div id="rules-input-container"
+                                class="rule-input-container flex flex-col space-y-2 w-full pr-1">
+                                <!-- Rule inputs dynamically rendered here -->
+                            </div>
+                            <button type="button" onclick="addNewRuleInput()"
+                                class="text-[10px] font-bold text-blue-500 hover:text-blue-400 transition-colors uppercase tracking-wider flex items-center space-x-1 cursor-pointer">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                                <span>Add Rule</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Column 3: Post-Exam Rules -->
+                    <div class="rules-section exam-section">
+                        <button type="button" id="post-rules-header" onclick="toggleRulesSection('post')"
+                            class="rules-section-header" aria-expanded="false" aria-controls="post-rules-body">
+                            <span class="rules-section-title">Post-Exam Rules <span id="post-rules-count"
+                                    class="rules-count">0</span></span>
+                            <svg class="rules-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        <div id="post-rules-body"
+                            class="rules-section-body hidden flex flex-col items-center space-y-3">
+                            <div id="post-rules-input-container"
+                                class="rule-input-container flex flex-col space-y-2 w-full pr-1">
+                                <!-- Post rule inputs dynamically rendered here -->
+                            </div>
+                            <button type="button" onclick="addNewPostRuleInput()"
+                                class="text-[10px] font-bold text-blue-500 hover:text-blue-400 transition-colors uppercase tracking-wider flex items-center space-x-1 cursor-pointer">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                                <span>Add Rule</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Presets Section -->
-                <div class="flex flex-wrap justify-center gap-2 w-full text-[10px] font-bold tracking-wider uppercase text-gray-500">
-                    <button onclick="setPreset(0, 5, 0)" class="px-2.5 py-1 rounded-lg border border-gray-700/30 hover:bg-gray-500/10 hover:text-current transition-colors">5m</button>
-                    <button onclick="setPreset(0, 10, 0)" class="px-2.5 py-1 rounded-lg border border-gray-700/30 hover:bg-gray-500/10 hover:text-current transition-colors">10m</button>
-                    <button onclick="setPreset(0, 15, 0)" class="px-2.5 py-1 rounded-lg border border-gray-700/30 hover:bg-gray-500/10 hover:text-current transition-colors">15m</button>
-                    <button onclick="setPreset(0, 30, 0)" class="px-2.5 py-1 rounded-lg border border-gray-700/30 hover:bg-gray-500/10 hover:text-current transition-colors">30m</button>
-                    <button onclick="setPreset(1, 0, 0)" class="px-2.5 py-1 rounded-lg border border-gray-700/30 hover:bg-gray-500/10 hover:text-current transition-colors">1h</button>
-                    <button onclick="setPreset(2, 0, 0)" class="px-2.5 py-1 rounded-lg border border-gray-700/30 hover:bg-gray-500/10 hover:text-current transition-colors">2h</button>
-                </div>
-
-                <hr class="w-full border-t border-[var(--sep-color)] opacity-30 my-1">
-
-                <!-- Pre-Start Rules Setup Section -->
-                <div class="flex flex-col items-center space-y-3 w-full">
-                    <span class="text-[10px] tracking-widest uppercase font-bold text-gray-400">Pre-Start Rules (Optional)</span>
-                    <div id="rules-input-container" class="rule-input-container flex flex-col space-y-2 w-full pr-1">
-                        <!-- Rule inputs dynamically rendered here -->
-                    </div>
-                    <button type="button" onclick="addNewRuleInput()" class="text-[10px] font-bold text-blue-500 hover:text-blue-400 transition-colors uppercase tracking-wider flex items-center space-x-1 mt-1 cursor-pointer">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                <!-- Footer: policy link, start, reset (full width, below the grid) -->
+                <div id="setup-footer" class="flex flex-col items-center space-y-3 w-full">
+                    <a href="https://lawlibrary.uwindsor.ca/Presto/content/GetDoc.axd?attchmnt=False&amp;ctID=OTdhY2QzODgtNjhlYi00ZWY0LTg2OTUtNmU5NjEzY2JkMWYx&amp;pID=MjMy&amp;rCFU=&amp;rID=MjI%3D&amp;rIdx=MjI%3D&amp;uSesDM=False"
+                        target="_blank" rel="noopener noreferrer" class="policy-link exam-section">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
                         </svg>
-                        <span>Add Rule</span>
+                        <span>UWindsor Policy on Conduct of Exams &amp; Tests</span>
+                    </a>
+
+                    <button onclick="reviewRulesOrStart()"
+                        class="bg-blue-600 hover:bg-blue-500 text-white w-full py-3.5 rounded-xl font-bold text-xs tracking-widest uppercase transition-colors shadow-lg cursor-pointer">Start
+                        Timer</button>
+
+                    <button type="button" onclick="resetRulesToDefault()"
+                        class="exam-section text-[10px] font-bold text-gray-500 hover:text-red-500 transition-colors uppercase tracking-wider flex items-center space-x-1.5 cursor-pointer">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="1 4 1 10 7 10"></polyline>
+                            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                        </svg>
+                        <span>Reset rules to default</span>
                     </button>
                 </div>
-
-                <hr class="w-full border-t border-[var(--sep-color)] opacity-20 my-1">
-
-                <!-- Post-Exam Rules Setup Section -->
-                <div class="flex flex-col items-center space-y-3 w-full">
-                    <span class="text-[10px] tracking-widest uppercase font-bold text-gray-400">Post-Exam Rules (Optional)</span>
-                    <div id="post-rules-input-container" class="rule-input-container flex flex-col space-y-2 w-full pr-1">
-                        <!-- Post rule inputs dynamically rendered here -->
-                    </div>
-                    <button type="button" onclick="addNewPostRuleInput()" class="text-[10px] font-bold text-blue-500 hover:text-blue-400 transition-colors uppercase tracking-wider flex items-center space-x-1 mt-1 cursor-pointer">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                        <span>Add Rule</span>
-                    </button>
-                </div>
-
-                <button onclick="reviewRulesOrStart()"
-                    class="bg-blue-600 hover:bg-blue-500 text-white w-full py-3.5 rounded-xl font-bold text-xs tracking-widest uppercase transition-colors shadow-lg mt-2 cursor-pointer">Start Timer</button>
             </div>
 
             <!-- Pre-Start Rules Presentation Screen -->
-            <div id="view-rules" class="hidden flex flex-col items-center w-full max-w-[98vw] px-4 py-4 animate-fade-in-page">
-                <h2 class="text-2xl md:text-5xl font-bold tracking-wider text-center mb-10 uppercase opacity-90">Pre-Start Instructions</h2>
-                <div class="w-full bg-[var(--panel-bg)] border border-[var(--sep-color)] rounded-3xl p-8 md:p-12 space-y-6 shadow-2xl relative overflow-hidden">
+            <div id="view-rules"
+                class="rules-screen hidden flex flex-col items-center px-4 py-4 animate-fade-in-page">
+                <h2 class="text-2xl md:text-5xl font-bold tracking-wider text-center mb-10 uppercase opacity-90">
+                    Pre-Start Instructions</h2>
+                <div
+                    class="w-full max-w-[1500px] mx-auto bg-[var(--panel-bg)] border border-[var(--sep-color)] rounded-3xl p-8 md:p-12 space-y-6 shadow-2xl relative overflow-hidden">
                     <div class="developer-bg">
                         <div class="blob blob-1"></div>
                         <div class="blob blob-2"></div>
                         <div class="blob blob-3"></div>
                     </div>
-                    <ol id="rules-display-list" class="list-decimal list-inside text-lg md:text-3xl space-y-6 font-semibold opacity-85 leading-relaxed">
+                    <ol id="rules-display-list"
+                        class="list-decimal list-inside text-lg md:text-3xl space-y-6 font-semibold opacity-85 leading-relaxed">
                         <!-- Rules listed here -->
                     </ol>
                 </div>
                 <div class="flex space-x-6 mt-12">
-                    <button onclick="showTimerSetup()" class="bg-gray-500/20 hover:bg-gray-500/30 text-current px-10 py-4 rounded-xl text-sm tracking-widest uppercase transition-colors font-bold cursor-pointer">Back</button>
-                    <button onclick="beginCountdown()" class="bg-blue-600 hover:bg-blue-500 text-white px-14 py-4 rounded-xl font-bold text-sm tracking-widest uppercase transition-colors shadow-xl cursor-pointer">Start Countdown</button>
+                    <button onclick="showTimerSetup()"
+                        class="bg-gray-500/20 hover:bg-gray-500/30 text-current px-10 py-4 rounded-xl text-sm tracking-widest uppercase transition-colors font-bold cursor-pointer">Back</button>
+                    <button onclick="beginCountdown()"
+                        class="bg-blue-600 hover:bg-blue-500 text-white px-14 py-4 rounded-xl font-bold text-sm tracking-widest uppercase transition-colors shadow-xl cursor-pointer">Start
+                        Countdown</button>
                 </div>
             </div>
 
             <!-- Post-Exam Rules Presentation Screen -->
-            <div id="view-post-rules" class="hidden flex flex-col items-center w-full max-w-[98vw] px-4 py-4 animate-fade-in-page">
-                <h2 class="text-2xl md:text-5xl font-bold tracking-wider text-center mb-10 uppercase opacity-90 text-red-500">Exam Concluded</h2>
-                <div class="w-full bg-[var(--panel-bg)] border border-[var(--sep-color)] rounded-3xl p-8 md:p-12 space-y-6 shadow-2xl relative overflow-hidden">
+            <div id="view-post-rules"
+                class="rules-screen hidden flex flex-col items-center px-4 py-4 animate-fade-in-page">
+                <h2
+                    class="text-2xl md:text-5xl font-bold tracking-wider text-center mb-10 uppercase opacity-90 text-red-500">
+                    Exam Concluded</h2>
+                <div
+                    class="w-full max-w-[1500px] mx-auto bg-[var(--panel-bg)] border border-[var(--sep-color)] rounded-3xl p-8 md:p-12 space-y-6 shadow-2xl relative overflow-hidden">
                     <div class="developer-bg">
                         <div class="blob blob-1"></div>
                         <div class="blob blob-2"></div>
                         <div class="blob blob-3"></div>
                     </div>
-                    <ol id="post-rules-display-list" class="list-decimal list-inside text-lg md:text-3xl space-y-6 font-semibold opacity-85 leading-relaxed">
+                    <ol id="post-rules-display-list"
+                        class="list-decimal list-inside text-lg md:text-3xl space-y-6 font-semibold opacity-85 leading-relaxed">
                         <!-- Rules listed here -->
                     </ol>
                 </div>
                 <div class="flex space-x-6 mt-12">
-                    <button onclick="stopTimer()" class="bg-blue-600 hover:bg-blue-500 text-white px-14 py-4 rounded-xl font-bold text-sm tracking-widest uppercase transition-colors shadow-xl cursor-pointer">Return to Setup</button>
+                    <button onclick="stopTimer()"
+                        class="bg-blue-600 hover:bg-blue-500 text-white px-14 py-4 rounded-xl font-bold text-sm tracking-widest uppercase transition-colors shadow-xl cursor-pointer">Return
+                        to Setup</button>
                 </div>
             </div>
             <div id="timer-running" class="hidden flex flex-col items-center space-y-6">
@@ -820,11 +1141,16 @@
                     <button onclick="confirmStop()"
                         class="bg-red-500/10 text-red-500 px-10 py-4 rounded-full text-xs tracking-widest uppercase border border-red-500/20 transition-colors">Reset</button>
                 </div>
-                <div class="flex space-x-3 md:space-x-4 text-base md:text-xl font-bold tracking-wider uppercase text-gray-500">
-                    <button onclick="adjustTime(-300)" class="bg-gray-500/10 hover:bg-gray-500/20 px-6 py-4 md:px-8 md:py-5 rounded-xl transition-colors">-5m</button>
-                    <button onclick="adjustTime(-60)" class="bg-gray-500/10 hover:bg-gray-500/20 px-6 py-4 md:px-8 md:py-5 rounded-xl transition-colors">-1m</button>
-                    <button onclick="adjustTime(60)" class="bg-blue-600/10 text-blue-500 hover:bg-blue-600/20 px-6 py-4 md:px-8 md:py-5 rounded-xl transition-colors">+1m</button>
-                    <button onclick="adjustTime(300)" class="bg-blue-600/10 text-blue-500 hover:bg-blue-600/20 px-6 py-4 md:px-8 md:py-5 rounded-xl transition-colors">+5m</button>
+                <div
+                    class="flex space-x-3 md:space-x-4 text-base md:text-xl font-bold tracking-wider uppercase text-gray-500">
+                    <button onclick="adjustTime(-300)"
+                        class="bg-gray-500/10 hover:bg-gray-500/20 px-6 py-4 md:px-8 md:py-5 rounded-xl transition-colors">-5m</button>
+                    <button onclick="adjustTime(-60)"
+                        class="bg-gray-500/10 hover:bg-gray-500/20 px-6 py-4 md:px-8 md:py-5 rounded-xl transition-colors">-1m</button>
+                    <button onclick="adjustTime(60)"
+                        class="bg-blue-600/10 text-blue-500 hover:bg-blue-600/20 px-6 py-4 md:px-8 md:py-5 rounded-xl transition-colors">+1m</button>
+                    <button onclick="adjustTime(300)"
+                        class="bg-blue-600/10 text-blue-500 hover:bg-blue-600/20 px-6 py-4 md:px-8 md:py-5 rounded-xl transition-colors">+5m</button>
                 </div>
             </div>
         </div>
@@ -838,8 +1164,7 @@
 
             <div id="quote-container" class="px-6">
                 <p id="quote-text" class="italic font-medium"></p>
-                <span id="quote-author"
-                    class="block uppercase tracking-widest font-semibold"></span>
+                <span id="quote-author" class="block uppercase tracking-widest font-semibold"></span>
             </div>
 
             <button onclick="renderQuote(1)" class="quote-nav-btn p-2" title="Next Quote">
@@ -1114,20 +1439,23 @@
             }
         }
 
+        // Default rules carry the matching University of Windsor "Policy on
+        // Conduct of Exams and Tests" reference in [brackets]. Section labels
+        // are the policy's own headings: "Attendance & ID" and "Exam Process".
         const defaultRules = [
-            "Find your name (alphabetical by last name, snaking front-to-back)",
-            "Read cover page and sign it",
-            "Remove caps / hats",
-            "Have your IDs on the desk",
-            "Remain quiet at all times",
-            "You cannot leave in the first 30 minutes and last 5 minutes"
+            "Find your seat/name (ordered by last name, snaking front-to-back)",
+            "Read the cover page and sign it [Attendance & ID §3]",
+            "Remove hat/caps — religious head coverings are permitted [Exam Process §13]",
+            "Have your IDs on the desk [Attendance & ID §2]",
+            "Remain quiet at all times [Exam Process §6–8]",
+            "You cannot leave in the first 30 minutes and last 5 minutes [Exam Process §3–4]"
         ];
 
         const defaultPostRules = [
-            "Stop writing immediately and close your exam paper",
-            "Remain seated and quiet until all exams are collected",
-            "You need to hand in your formula sheet with your exam",
-            "Exit the room quietly once dismissed by the proctor"
+            "Stop writing immediately and close your exam paper [Exam Process §18]",
+            "Remain seated and quiet until all exams are collected [Exam Process §18]",
+            "You need to hand in your formula sheet with your exam [Exam Process §19]",
+            "Exit the room quietly once dismissed by the proctor [Exam Process §18]"
         ];
 
         // A single rule-editor implementation, instantiated once for the
@@ -1149,6 +1477,23 @@
             const inputs = container.querySelectorAll('.rule-item-input');
             editor.rules = Array.from(inputs).map(i => i.value.trim()).filter(v => v !== '');
             localStorage.setItem(editor.storageKey, JSON.stringify(editor.rules));
+            updateRuleCount(editor);
+        }
+
+        // Keep the count badge in a collapsed section's header current.
+        function updateRuleCount(editor) {
+            if (!editor.countId) return;
+            const el = document.getElementById(editor.countId);
+            if (el) el.textContent = editor.rules.length;
+        }
+
+        function toggleRulesSection(key) {
+            const body = document.getElementById(key + '-rules-body');
+            const header = document.getElementById(key + '-rules-header');
+            if (!body || !header) return;
+            const nowHidden = body.classList.toggle('hidden');
+            header.classList.toggle('open', !nowHidden);
+            header.setAttribute('aria-expanded', String(!nowHidden));
         }
 
         function renderRuleEditor(editor) {
@@ -1172,6 +1517,7 @@
                 itemDiv.querySelector('.rule-delete-btn').addEventListener('click', () => deleteRuleFromEditor(editor, idx));
                 container.appendChild(itemDiv);
             });
+            updateRuleCount(editor);
         }
 
         function addRuleToEditor(editor) {
@@ -1194,6 +1540,8 @@
 
         const preRules = createRuleEditor('timer_rules', 'rules-input-container', defaultRules);
         const postRules = createRuleEditor('timer_post_rules', 'post-rules-input-container', defaultPostRules);
+        preRules.countId = 'pre-rules-count';
+        postRules.countId = 'post-rules-count';
 
         // Migrate: replace the old default ID-verification instruction with the formula-sheet one.
         const oldIdRuleIdx = postRules.rules.indexOf("Have your ID ready on your desk for verification");
@@ -1205,6 +1553,49 @@
         // Thin wrappers so the inline HTML onclick handlers keep working.
         function addNewRuleInput() { addRuleToEditor(preRules); }
         function addNewPostRuleInput() { addRuleToEditor(postRules); }
+
+        // Restore both rule lists to the shipped defaults (confirmed first,
+        // since it discards any custom rules the user has entered).
+        function resetRulesToDefault() {
+            showConfirmModal({
+                title: 'Reset rules to default?',
+                message: 'Your custom pre-start and post-exam rules will be replaced with the default set.',
+                confirmLabel: 'Reset',
+                cancelLabel: 'Cancel',
+                danger: true,
+                icon: 'warning',
+                onConfirm: doResetRulesToDefault
+            });
+        }
+        function doResetRulesToDefault() {
+            preRules.rules = [...defaultRules];
+            postRules.rules = [...defaultPostRules];
+            localStorage.setItem(preRules.storageKey, JSON.stringify(preRules.rules));
+            localStorage.setItem(postRules.storageKey, JSON.stringify(postRules.rules));
+            renderRuleEditor(preRules);
+            renderRuleEditor(postRules);
+        }
+
+        // --- Simple vs. Exam mode ---
+        // Simple: a bare countdown. Exam: also shows pre-start & post-exam rule
+        // editors and their presentation screens. The choice is persisted.
+        let timerMode = localStorage.getItem('timer_mode') === 'exam' ? 'exam' : 'simple';
+
+        function applyTimerMode() {
+            const isExam = timerMode === 'exam';
+            document.getElementById('mode-simple').classList.toggle('active', !isExam);
+            document.getElementById('mode-exam').classList.toggle('active', isExam);
+            document.getElementById('timer-setup').classList.toggle('exam-mode', isExam);
+            document.getElementById('mode-desc').textContent = isExam
+                ? 'For proctored exams — add rules shown before the start and after time is up.'
+                : 'A quick countdown — pick a duration and go.';
+        }
+
+        function setTimerMode(mode) {
+            timerMode = mode === 'exam' ? 'exam' : 'simple';
+            localStorage.setItem('timer_mode', timerMode);
+            applyTimerMode();
+        }
 
         function clampField(id, max) {
             const el = document.getElementById(id);
@@ -1223,6 +1614,13 @@
             if (timeLeft <= 0) return;
 
             timerDuration = timeLeft;
+
+            // Simple mode: no rules — go straight to the countdown.
+            if (timerMode !== 'exam') {
+                beginCountdown();
+                return;
+            }
+
             saveRuleEditor(preRules);
 
             if (preRules.rules.length > 0) {
@@ -1322,6 +1720,12 @@
             document.getElementById('progress-bar-container').classList.add('hidden');
             updateTitle();
             updateQuoteVisibility();
+
+            // Simple mode: no post-exam rules — just return to setup.
+            if (timerMode !== 'exam') {
+                stopTimer();
+                return;
+            }
 
             saveRuleEditor(postRules);
             if (postRules.rules.length > 0) {
@@ -1558,6 +1962,7 @@
             }, 90000);
             renderRuleEditor(preRules);
             renderRuleEditor(postRules);
+            applyTimerMode();
 
             // Restore persistent tab selection
             const savedTab = localStorage.getItem('active_tab') || 'clock';
