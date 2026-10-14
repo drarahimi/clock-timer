@@ -4,7 +4,7 @@
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 
-A sleek, minimalist, web-based flip clock and countdown timer inspired by the clean aesthetics of macOS. Built entirely with vanilla JavaScript, CSS 3D transforms, and Tailwind CSS. No build tools or complex frameworks required—just open and run!
+A sleek, minimalist, web-based flip clock and countdown timer inspired by the clean aesthetics of macOS. Built entirely with vanilla JavaScript, CSS 3D transforms, and Tailwind CSS. No frameworks, and it works fully offline: just open and run!
 
 [**🔴 View Live Demo Here**](https://drarahimi.github.io/clock-timer/)
 ![Demo](/demo.gif "Demo")
@@ -28,7 +28,7 @@ A sleek, minimalist, web-based flip clock and countdown timer inspired by the cl
 
 ## 🚀 Getting Started
 
-Because this project uses vanilla HTML, CSS, and JavaScript with Tailwind pulled via CDN, setup is completely frictionless.
+The app is plain HTML, CSS, and JavaScript with every asset (including the compiled Tailwind CSS and the Inter font) checked into the repo, so it needs no network connection and no install step to run.
 
 1. **Clone the repository:**
    ```bash
@@ -45,13 +45,28 @@ Because this project uses vanilla HTML, CSS, and JavaScript with Tailwind pulled
 Simply double-click the `index.html` file to open it in your default web browser.
 *(Alternatively, use an extension like VS Code Live Server for a better development experience).*
 
+### Development
+
+You only need Node.js if you change Tailwind classes or want to run the tests.
+
+```bash
+npm install
+npm run build:css        # regenerate css/tailwind.css after changing Tailwind classes
+npm run watch:css        # or rebuild automatically while you edit
+npx playwright install chromium   # first time only
+npm test                 # run the browser test suite
+```
+
+Commit the regenerated `css/tailwind.css` along with your markup changes, since the site is served straight from the repo.
+
 ## 🛠️ Tech Stack & Architecture
 
-* **Structure:** A single self-contained `index.html` — no build step, no bundler, no `node_modules`.
-* **Styling:** Tailwind CSS (via CDN) for rapid layout and UI components, combined with custom CSS for complex 3D perspective animations.
+* **Structure:** `index.html` (markup), `css/app.css` (custom styles and 3D flip animations), and `js/app.js` (app logic). No bundler and no runtime dependencies.
+* **Styling:** Tailwind CSS, compiled ahead of time into `css/tailwind.css` from `css/tailwind.src.css` with the Tailwind CLI, so pages never depend on a CDN.
 * **Logic:** Vanilla JavaScript handles the time calculations, DOM manipulation, interval management, timestamp-based countdown, Wake Lock, and Web Audio alerts.
+* **Tests:** [Playwright](https://playwright.dev/) tests in `tests/` cover offline loading, countdown accuracy, pause, warnings, resume-after-reload, rule persistence, and accessible names.
 * **Browser APIs used:** Web Audio API (locally generated beeps/alarm, no sound files), Screen Wake Lock API, Web Speech API (`speechSynthesis`, for Read Rules Aloud), and `localStorage` to persist mode, rules, quote style, and exam-option preferences across sessions.
-* **Typography:** The highly legible [Inter font](https://www.google.com/search?q=https://fonts.google.com/specimen/Inter) serves as the primary typeface, utilizing `font-variant-numeric: tabular-nums` to ensure the flipping digits remain perfectly aligned.
+* **Typography:** The highly legible [Inter font](https://rsms.me/inter/), self-hosted from `fonts/`, serves as the primary typeface, utilizing `font-variant-numeric: tabular-nums` to ensure the flipping digits remain perfectly aligned.
 
 ## 🎨 How the Flip Animation Works
 
@@ -59,7 +74,7 @@ The mechanical flip effect is achieved by splitting each digit into a top and bo
 
 ## 🤝 Contributing
 
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://www.google.com/search?q=%23) if you want to contribute.
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/drarahimi/clock-timer/issues) if you want to contribute.
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)

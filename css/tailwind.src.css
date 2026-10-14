@@ -1,0 +1,4 @@
+/* Tailwind source. Edit this, then run `npm run build:css` to regenerate css/tailwind.css. */
+@import "tailwindcss" source(none);
+@source "../index.html";
+@source "../js";
